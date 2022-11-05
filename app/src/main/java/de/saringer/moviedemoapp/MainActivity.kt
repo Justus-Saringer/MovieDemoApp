@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import de.saringer.moviedemoapp.features.LoginScreen
+import de.saringer.moviedemoapp.features.LoginScreenState
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,10 +19,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MovieDemoAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-
-                }
+                val state = LoginScreenState.rememberState()
+                LoginScreen(state = state)
             }
         }
     }
