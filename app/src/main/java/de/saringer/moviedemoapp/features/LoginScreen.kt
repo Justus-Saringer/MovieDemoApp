@@ -22,7 +22,10 @@ import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(state: LoginScreenState) {
+fun LoginScreen(
+    state: LoginScreenState,
+    onContinueClick: () -> Unit
+) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -37,11 +40,11 @@ fun LoginScreen(state: LoginScreenState) {
 
             TitleArea()
 
-            UserInputArea(state = state, keyboardController = keyboardController)
+            UserInputArea(state = state, keyboardController = keyboardController, onContinueClick = onContinueClick)
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            ButtonArea(state = state, keyboardController = keyboardController)
+            ButtonArea(state = state, keyboardController = keyboardController, onContinueClick = onContinueClick)
         }
     }
 }
@@ -57,7 +60,7 @@ private fun TitleArea() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?) {
+private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?, onContinueClick: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         // username
         OutlinedTextField(
@@ -99,7 +102,7 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?) {
+private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?, onContinueClick: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Button(
             modifier = Modifier
@@ -107,7 +110,8 @@ private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyb
                 .height(52.dp),
             onClick = {
                 keyboardController?.hide()
-                /*TODO*/
+                onContinueClick()
+                /*TODO integrate login request*/
             }
         ) {
             Text(text = stringResource(id = R.string.sign_in))
@@ -122,7 +126,8 @@ private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyb
             elevation = null,
             onClick = {
                 keyboardController?.hide()
-                /*TODO*/
+                onContinueClick()
+                /*TODO add logic for continuing without account */
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Transparent,
@@ -139,6 +144,6 @@ private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyb
 private fun LoginScreenPreview() {
     MovieDemoAppTheme {
         val state = LoginScreenState.rememberState()
-        LoginScreen(state = state)
+        LoginScreen(state = state) {}
     }
 }
