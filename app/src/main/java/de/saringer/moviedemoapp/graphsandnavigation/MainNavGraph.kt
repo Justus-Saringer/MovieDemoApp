@@ -5,21 +5,27 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import de.saringer.moviedemoapp.features.SearchScreen
+import de.saringer.moviedemoapp.features.SettingsScreen
+import de.saringer.moviedemoapp.features.YoursScreen
 
 @Composable
 fun MainNavGraph(navController: NavHostController, paddingValues: PaddingValues) {
     NavHost(navController = navController, startDestination = BottomNavItem.Search.route) {
 
         composable(BottomNavItem.Settings.route) {
-            // TODO: create SettingsScreen() and state
+            SettingsScreen(paddingValues = paddingValues)
+            // TODO: create SettingsScreenState
         }
 
         composable(BottomNavItem.Search.route) {
-            // TODO: create SearchScreen and state
+            SearchScreen(paddingValues = paddingValues)
+            // TODO: create SearchScreenState
         }
 
         composable(BottomNavItem.Yours.route) {
-            // TODO: create YoursScreen and state
+            YoursScreen(paddingValues = paddingValues)
+            // TODO: create YoursScreenState
         }
     }
 }

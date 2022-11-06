@@ -6,6 +6,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -15,6 +17,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.saringer.moviedemoapp.R
@@ -72,7 +76,17 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
                 state.usernameInput.value = newValue
             },
             enabled = !state.isLoading.value,
-            trailingIcon = { Icons.Default.Clear }
+            trailingIcon = {
+                if (state.usernameInput.value.isNotBlank()) {
+                    IconButton(
+                        onClick = {
+                            state.usernameInput.value = ""
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Default.Clear, contentDescription = null)
+                    }
+                }
+            }
         )
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -95,7 +109,17 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             enabled = !state.isLoading.value,
-            trailingIcon = { Icons.Default.Clear },
+            trailingIcon = {
+                IconButton(
+                    onClick = { state.isPasswordVisible.value = !state.isPasswordVisible.value },
+                ) {
+                    Icon(
+                        imageVector = if (state.isPasswordVisible.value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = null
+                    )
+                }
+            },
+            visualTransformation = if (state.isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation()
         )
     }
 }

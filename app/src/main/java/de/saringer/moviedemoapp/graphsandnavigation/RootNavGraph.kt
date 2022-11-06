@@ -11,11 +11,12 @@ import de.saringer.moviedemoapp.features.MainScreen
 @Composable
 fun RootNavGraph(navController: NavHostController) {
 
-    // TODO: create a viewModel to store the states
+    // TODO: create a viewModel to store the states in
     val loginState = LoginScreenState.rememberState()
 
     NavHost(
         navController = navController,
+        route = RootGraph.ROOT,
         startDestination = RootGraph.LOGIN
     ) {
         composable(route = RootGraph.LOGIN) {
@@ -32,5 +33,6 @@ fun RootNavGraph(navController: NavHostController) {
 
 object RootGraph {
     const val LOGIN = "login"
+    const val ROOT = "root"
     const val BOTTOMBAR = "bottom_bar_graph"
 }
