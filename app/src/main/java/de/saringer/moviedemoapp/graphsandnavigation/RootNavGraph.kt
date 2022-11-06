@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.saringer.moviedemoapp.features.BottomBarScreen
 import de.saringer.moviedemoapp.features.LoginScreen
 import de.saringer.moviedemoapp.features.LoginScreenState
+import de.saringer.moviedemoapp.features.MainScreen
 
 @Composable
 fun RootNavGraph(navController: NavHostController) {
@@ -25,7 +25,7 @@ fun RootNavGraph(navController: NavHostController) {
         }
 
         composable(route = RootGraph.BOTTOMBAR) {
-            BottomBarScreen()
+            MainScreen()
         }
     }
 }
