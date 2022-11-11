@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features
+package de.saringer.moviedemoapp.features.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions

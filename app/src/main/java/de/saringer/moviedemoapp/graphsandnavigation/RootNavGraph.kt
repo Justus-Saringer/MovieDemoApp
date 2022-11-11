@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.saringer.moviedemoapp.features.LoginScreen
-import de.saringer.moviedemoapp.features.LoginScreenState
+import de.saringer.moviedemoapp.features.login.LoginScreen
+import de.saringer.moviedemoapp.features.login.LoginScreenState
 import de.saringer.moviedemoapp.features.MainScreen
 
 @Composable
