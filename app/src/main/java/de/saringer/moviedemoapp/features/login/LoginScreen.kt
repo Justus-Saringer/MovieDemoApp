@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
+import de.saringer.moviedemoapp.ui.theme.orange
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -56,9 +58,19 @@ fun LoginScreen(
 @Composable
 private fun TitleArea() {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = stringResource(id = R.string.movie_database_app), style = MaterialTheme.typography.h6)
+        Text(
+            text = stringResource(id = R.string.movie_database_app),
+            style = MaterialTheme.typography.h6,
+            color = MaterialTheme.colors.onBackground,
+            fontWeight = FontWeight.Bold
+        )
 
-        Text(text = "Login", style = MaterialTheme.typography.h4)
+        Text(
+            text = "Login",
+            style = MaterialTheme.typography.h4,
+            color = MaterialTheme.colors.onBackground,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
@@ -86,7 +98,18 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
                         Icon(imageVector = Icons.Default.Clear, contentDescription = null)
                     }
                 }
-            }
+            },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                backgroundColor = MaterialTheme.colors.primary,
+                cursorColor = MaterialTheme.colors.onPrimary,
+                placeholderColor = MaterialTheme.colors.onPrimary,
+                textColor = MaterialTheme.colors.onPrimary,
+                trailingIconColor = MaterialTheme.colors.onPrimary,
+                unfocusedBorderColor = MaterialTheme.colors.onPrimary,
+                focusedBorderColor = MaterialTheme.colors.onPrimary,
+                unfocusedLabelColor = MaterialTheme.colors.onPrimary,
+                focusedLabelColor = MaterialTheme.colors.onPrimary,
+            )
         )
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -119,7 +142,18 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
                     )
                 }
             },
-            visualTransformation = if (state.isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation()
+            visualTransformation = if (state.isPasswordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                backgroundColor = MaterialTheme.colors.primary,
+                cursorColor = MaterialTheme.colors.onPrimary,
+                placeholderColor = MaterialTheme.colors.onPrimary,
+                textColor = MaterialTheme.colors.onPrimary,
+                trailingIconColor = MaterialTheme.colors.onPrimary,
+                unfocusedBorderColor = MaterialTheme.colors.onPrimary,
+                focusedBorderColor = MaterialTheme.colors.onPrimary,
+                unfocusedLabelColor = MaterialTheme.colors.onPrimary,
+                focusedLabelColor = MaterialTheme.colors.onPrimary,
+            )
         )
     }
 }
@@ -136,7 +170,8 @@ private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyb
                 keyboardController?.hide()
                 onContinueClick()
                 /*TODO integrate login request*/
-            }
+            },
+            colors = ButtonDefaults.buttonColors(backgroundColor = orange)
         ) {
             Text(text = stringResource(id = R.string.sign_in))
         }
