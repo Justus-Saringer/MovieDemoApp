@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.login
+package de.saringer.moviedemoapp.features.login.network.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
