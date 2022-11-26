@@ -5,12 +5,12 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="username_german">Benutzername</string>
-    <string name="movie_database_app">MovieDatabase App</string>
+    <string name="movie_database_app">The Movie Database App</string>
     <string name="movie_database_app_german">Filmdatenbank App</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_in_german">Anmelden</string>
-    <string name="skip">Skip</string>
-    <string name="skip_german">Überspringen</string>
+    <string name="skip">Log in as Guest</string>
+    <string name="skip_german">Als Gast einloggen</string>
 
     // BottomNavItem
     <string name="settings">Settings</string>
