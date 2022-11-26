@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features
+package de.saringer.moviedemoapp.features.network
 
 import retrofit2.http.GET
 
