@@ -1,13 +1,14 @@
-package de.saringer.moviedemoapp.features.network
+package de.saringer.moviedemoapp.features.login.network
 
 import de.saringer.moviedemoapp.BuildConfig
-import de.saringer.moviedemoapp.features.login.LoginTokenRemote
+import de.saringer.moviedemoapp.features.login.network.model.LoginSessionIdUserRemote
+import de.saringer.moviedemoapp.features.login.network.model.LoginTokenRemote
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface MovieApi {
+interface LoginApi {
 
     // region login
 
@@ -21,9 +22,10 @@ interface MovieApi {
     suspend fun getSessionIdWithUserData(
         @Query("username") username: String,
         @Query("password") password: String,
-        @Query("request_token") requestToken: String
-    ): Response<LoginTokenRemote>
+        @Query("request_token") sessionId: String
+    ): Response<LoginSessionIdUserRemote>
 
+    // TODO: move to correct place
     @POST("/authentication/session")
     suspend fun deleteSession() : Response<Boolean>
 
