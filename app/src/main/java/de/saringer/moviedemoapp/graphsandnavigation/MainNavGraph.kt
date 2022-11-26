@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.saringer.moviedemoapp.features.SearchScreen
-import de.saringer.moviedemoapp.features.SettingsScreen
-import de.saringer.moviedemoapp.features.YoursScreen
+import de.saringer.moviedemoapp.features.Search.SearchScreen
+import de.saringer.moviedemoapp.features.settings.SettingsScreen
+import de.saringer.moviedemoapp.features.yours.YoursScreen
 
 @Composable
 fun MainNavGraph(navController: NavHostController, paddingValues: PaddingValues) {

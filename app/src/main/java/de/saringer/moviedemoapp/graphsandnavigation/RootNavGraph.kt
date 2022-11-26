@@ -21,8 +21,8 @@ fun RootNavGraph(navController: NavHostController) {
     ) {
         composable(route = RootGraph.LOGIN) {
             LoginScreen(state = loginState) {
-                navController.popBackStack()
-                navController.navigate(RootGraph.BOTTOMBAR)
+//                navController.popBackStack()
+                navController.navigate(RootGraph.BOTTOMBAR) {popUpToRoute}
             }
         }
 
