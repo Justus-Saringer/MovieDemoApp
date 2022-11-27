@@ -1,5 +1,6 @@
 package de.saringer.moviedemoapp.features.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,7 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -22,9 +26,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ehsanmsz.mszprogressindicator.progressindicator.LineScaleProgressIndicator
 import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.orange
+import de.saringer.moviedemoapp.ui.theme.yellow
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -51,6 +57,45 @@ fun LoginScreen(
             Spacer(modifier = Modifier.size(16.dp))
 
             ButtonArea(state = state, keyboardController = keyboardController, onContinueClick = onContinueClick)
+        }
+
+        LoadingIndication(state.isLoading.value)
+    }
+}
+
+@Composable
+private fun LoadingIndication(isVisible: Boolean) {
+    if (isVisible) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.5f)
+                .background(Color.Black)
+                .pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            awaitPointerEvent(pass = PointerEventPass.Initial)
+                                .changes
+                                .forEach { it.consume() }
+                        }
+                    }
+                }
+        )
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            LineScaleProgressIndicator(
+                color = yellow,
+                animationDuration = 800,
+                animationDelay = 200,
+                startDelay = 0,
+                lineWidth = 3.dp,
+                lineCount = 5,
+                minLineHeight = 3.dp,
+                maxLineHeight = 30.dp
+            )
         }
     }
 }
@@ -203,6 +248,15 @@ private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyb
 private fun LoginScreenPreview() {
     MovieDemoAppTheme {
         val state = LoginScreenState.rememberState()
+        LoginScreen(state = state) {}
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+private fun LoginScreenLoadingPreview() {
+    MovieDemoAppTheme {
+        val state = LoginScreenState.rememberState(isLoading = true)
         LoginScreen(state = state) {}
     }
 }
