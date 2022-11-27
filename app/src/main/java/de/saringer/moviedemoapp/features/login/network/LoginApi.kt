@@ -22,7 +22,7 @@ interface LoginApi {
     suspend fun getSessionIdWithUserData(
         @Query("username") username: String,
         @Query("password") password: String,
-        @Query("request_token") sessionId: String
+        @Query("request_token") requestToken: String
     ): Response<LoginSessionIdUserRemote>
 
     // TODO: move to correct place
