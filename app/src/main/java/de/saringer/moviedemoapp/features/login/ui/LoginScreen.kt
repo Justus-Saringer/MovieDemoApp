@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.login
+package de.saringer.moviedemoapp.features.login.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
