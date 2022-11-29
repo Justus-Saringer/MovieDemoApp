@@ -247,7 +247,7 @@ private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyb
 @Composable
 private fun LoginScreenPreview() {
     MovieDemoAppTheme {
-        val state = LoginScreenState.rememberState()
+        val state = LoginScreenState(usernameInput = "", passwordInput = "", isLoading = false, isPasswordVisible = false)
         LoginScreen(state = state) {}
     }
 }
@@ -256,7 +256,7 @@ private fun LoginScreenPreview() {
 @Composable
 private fun LoginScreenLoadingPreview() {
     MovieDemoAppTheme {
-        val state = LoginScreenState.rememberState(isLoading = true)
+        val state = LoginScreenState(isLoading = true, usernameInput = "", passwordInput = "", isPasswordVisible = false)
         LoginScreen(state = state) {}
     }
 }
