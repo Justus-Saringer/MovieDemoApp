@@ -28,7 +28,7 @@ fun BottomBarNavigation(navController: NavHostController) {
                 icon = { Icon(imageVector = item.icon, contentDescription = item.title) },
                 label = { Text(text = item.title, style = MaterialTheme.typography.body2) },
                 selectedContentColor = Color.White,
-                unselectedContentColor = Color.Blue,
+                unselectedContentColor = MaterialTheme.colors.onBackground,
                 alwaysShowLabel = false,
                 onClick = {
                     navController.navigate(item.route) {
