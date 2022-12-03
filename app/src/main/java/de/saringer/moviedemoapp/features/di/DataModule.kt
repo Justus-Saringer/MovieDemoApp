@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp
+package de.saringer.moviedemoapp.features.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module

@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp
+package de.saringer.moviedemoapp.features.di
 
 import dagger.Module
 import dagger.Provides
