@@ -6,11 +6,13 @@ class LoginScreenState constructor(
     usernameInput: String,
     passwordInput: String,
     isLoading: Boolean,
-    isPasswordVisible: Boolean
+    isPasswordVisible: Boolean,
+    hasError: Boolean = false,
 ) {
 
     val usernameInput = mutableStateOf(usernameInput)
     val passwordInput = mutableStateOf(passwordInput)
     val isLoading = mutableStateOf(isLoading)
     val isPasswordVisible = mutableStateOf(isPasswordVisible)
+    val hasError = mutableStateOf(hasError)
 }

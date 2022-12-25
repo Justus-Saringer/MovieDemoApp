@@ -1,5 +1,6 @@
 package de.saringer.moviedemoapp.features.di
 
+import android.app.Application
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,5 +15,5 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideLoginRepository(loginApi: LoginApi): LoginRepository = LoginRepository(loginApi)
+    fun provideLoginRepository(loginApi: LoginApi, application: Application): LoginRepository = LoginRepository(loginApi, application)
 }
