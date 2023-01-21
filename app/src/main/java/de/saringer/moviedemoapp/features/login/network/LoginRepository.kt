@@ -5,9 +5,14 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdUser
+import de.saringer.moviedemoapp.features.login.network.domain.LoginToken
+import de.saringer.moviedemoapp.features.login.network.extension.toLoginToken
+import de.saringer.moviedemoapp.features.login.network.extension.toLoginSessionIdUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore(name = "user_login_data")
@@ -18,17 +23,17 @@ class LoginRepository @Inject constructor(
 ) {
     private val dataStore = application.applicationContext.dataStore
 
-    suspend fun getRequestToken() = api.getRequestToken()
-
     suspend fun getSessionIdForGuests() = api.getSessionIdForGuests()
 
     suspend fun getSessionIdWithUserData(
         username: String,
         password: String,
         requestToken: String
-    ) = api.getSessionIdWithUserData(
-        username = username, password = password, requestToken = requestToken
-    )
+    ): LoginSessionIdUser {
+        return api.getSessionIdWithUserData(
+            username = username, password = password, requestToken = requestToken
+        ).toLoginSessionIdUser()
+    }
 
     suspend fun deleteSession() = api.deleteSession()
 
@@ -61,6 +66,18 @@ class LoginRepository @Inject constructor(
             }
         }
         return password
+    }
+
+    suspend fun getTokenData(): LoginToken? {
+        return fetchToken()
+    }
+
+    private suspend fun fetchToken() = withContext(Dispatchers.IO) {
+        runCatching {
+            return@withContext api.getRequestToken().toLoginToken()
+        }.getOrElse {
+            return@withContext null
+        }
     }
 
     private object LoginKeys {
