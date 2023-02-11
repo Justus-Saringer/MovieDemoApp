@@ -35,7 +35,7 @@ class LoginRepository @Inject constructor(
         ).toLoginSessionIdUser()
     }
 
-    suspend fun deleteSession() = api.deleteSession()
+    suspend fun deleteSession(currentSession: String) = api.deleteSession(currentSession)
 
     fun saveLoginData(username: String, password: String) {
         CoroutineScope(Dispatchers.Default).launch {
@@ -49,7 +49,7 @@ class LoginRepository @Inject constructor(
     fun getStoredUsername(): String? {
         var username: String? = null
 
-        CoroutineScope(Dispatchers.Main).launch {
+       var bla = CoroutineScope(Dispatchers.Main).launch {
             dataStore.data.collect { preferences ->
                 username = preferences[LoginKeys.USERNAME]
             }
