@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -26,41 +27,70 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ehsanmsz.mszprogressindicator.progressindicator.LineScaleProgressIndicator
 import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.orange
-import de.saringer.moviedemoapp.ui.theme.yellow
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
     state: LoginScreenState,
-    onContinueClick: () -> Unit
+    onSignInAsUserClick: () -> Unit,
+    onSignInAsGuestClick: () -> Unit
 ) {
-
     val keyboardController = LocalSoftwareKeyboardController.current
+    val scope = rememberCoroutineScope()
 
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-        Column(
-            modifier = Modifier
-                .padding(60.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    Scaffold(
+        scaffoldState = rememberScaffoldState(
+            snackbarHostState = state.snackBarHostState
+        )
+    ) { paddingValues ->
 
-            TitleArea()
-
-            UserInputArea(state = state, keyboardController = keyboardController, onContinueClick = onContinueClick)
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            ButtonArea(state = state, keyboardController = keyboardController, onContinueClick = onContinueClick)
+        val onSnackBar: () -> Unit = {
+            scope.launch {
+                if (state.hasPageError) {
+                    state.snackBarHostState.showSnackbar(
+                        message = state.errorText,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
         }
 
-        LoadingIndication(state.isLoading.value)
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            color = MaterialTheme.colors.background
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(60.dp)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                TitleArea()
+
+                UserInputArea(state = state, keyboardController = keyboardController)
+
+                Spacer(modifier = Modifier.size(16.dp))
+
+                ButtonArea(
+                    state = state,
+                    keyboardController = keyboardController,
+                    onSignInAsGuestClick = onSignInAsGuestClick,
+                    onSignInAsUserClick = onSignInAsUserClick,
+                    onSnackBar = onSnackBar
+                )
+            }
+
+            LoadingIndication(state.isLoading.value)
+        }
     }
 }
 
@@ -113,7 +143,7 @@ private fun TitleArea() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?, onContinueClick: () -> Unit) {
+private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         // username
         OutlinedTextField(
@@ -163,7 +193,6 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
             singleLine = true,
             keyboardActions = KeyboardActions(
                 onDone = {
-                    /* TODO: add check if is available */
                     keyboardController?.hide()
                 }
             ),
@@ -197,16 +226,24 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?, onContinueClick: () -> Unit) {
+private fun ButtonArea(
+    state: LoginScreenState,
+    keyboardController: SoftwareKeyboardController?,
+    onSignInAsUserClick: () -> Unit,
+    onSignInAsGuestClick: () -> Unit,
+    onSnackBar: () -> Unit
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),
+            enabled = !state.isLoading.value,
             onClick = {
                 keyboardController?.hide()
-                onContinueClick()
-                /*TODO integrate login request*/
+                onSnackBar()
+                if (state.hasPageError) return@Button
+                onSignInAsUserClick()
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = orange)
         ) {
@@ -220,10 +257,12 @@ private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyb
                 .fillMaxWidth()
                 .height(52.dp),
             elevation = null,
+            enabled = !state.isLoading.value,
             onClick = {
                 keyboardController?.hide()
-                onContinueClick()
-                /*TODO add logic for continuing without account */
+                onSnackBar()
+                if (state.hasPageError) return@Button
+                onSignInAsGuestClick()
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Transparent,
@@ -240,7 +279,7 @@ private fun ButtonArea(state: LoginScreenState, keyboardController: SoftwareKeyb
 private fun LoginScreenPreview() {
     MovieDemoAppTheme {
         val state = LoginScreenState(usernameInput = "", passwordInput = "", isLoading = false, isPasswordVisible = false)
-        LoginScreen(state = state) {}
+        LoginScreen(state = state, onSignInAsUserClick = {}) {}
     }
 }
 
@@ -249,6 +288,6 @@ private fun LoginScreenPreview() {
 private fun LoginScreenLoadingPreview() {
     MovieDemoAppTheme {
         val state = LoginScreenState(isLoading = true, usernameInput = "", passwordInput = "", isPasswordVisible = false)
-        LoginScreen(state = state) {}
+        LoginScreen(state = state, onSignInAsUserClick = {}) {}
     }
 }
