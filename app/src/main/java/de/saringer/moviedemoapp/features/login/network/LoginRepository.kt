@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdUser
 import de.saringer.moviedemoapp.features.login.network.domain.LoginToken
+import de.saringer.moviedemoapp.features.login.network.extension.toLoginSessionIdGuest
 import de.saringer.moviedemoapp.features.login.network.extension.toLoginToken
 import de.saringer.moviedemoapp.features.login.network.extension.toLoginSessionIdUser
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +24,7 @@ class LoginRepository @Inject constructor(
 ) {
     private val dataStore = application.applicationContext.dataStore
 
-    suspend fun getSessionIdForGuests() = api.getSessionIdForGuests()
+    suspend fun getSessionIdForGuests() = api.getSessionIdForGuests().toLoginSessionIdGuest()
 
     suspend fun getSessionIdWithUserData(
         username: String,
@@ -48,13 +49,12 @@ class LoginRepository @Inject constructor(
 
     fun getStoredUsername(): String? {
         var username: String? = null
-
-       var bla = CoroutineScope(Dispatchers.Main).launch {
+        val getUsernameJob = CoroutineScope(Dispatchers.Main).launch {
             dataStore.data.collect { preferences ->
                 username = preferences[LoginKeys.USERNAME]
             }
         }
-        return username
+        getUsernameJob.onJoin.let { return username }
     }
 
     fun getStoredPassword(): String? {

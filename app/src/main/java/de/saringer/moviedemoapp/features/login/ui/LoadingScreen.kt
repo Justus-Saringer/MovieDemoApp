@@ -28,9 +28,7 @@ fun LoadingScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Title()
-
         Spacer(modifier = Modifier.height(8.dp))
-        // TODO: create shared and move this to it, several usages
         LinearLoadingIndicator()
     }
 }
