@@ -4,11 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.saringer.moviedemoapp.features.login.network.LoginRepository
+import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdGuest
 import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdUser
 import de.saringer.moviedemoapp.features.login.network.domain.LoginToken
-import de.saringer.moviedemoapp.features.login.network.model.LoginSessionIdRemote
-import de.saringer.moviedemoapp.features.login.network.model.LoginSessionIdUserRemote
+import de.saringer.moviedemoapp.features.login.network.extension.toLoginSessionIdGuest
 import de.saringer.moviedemoapp.features.login.ui.LoginScreenState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +21,7 @@ class LoginViewModel @Inject constructor(
     val loginState = LoginScreenState(usernameInput = "", passwordInput = "", isLoading = false, isPasswordVisible = false)
 
     var tokenData: LoginToken? = null
-    var sessionIdGuest: LoginSessionIdRemote? = null
+    var sessionIdGuest: LoginSessionIdGuest? = null
     var sessionIdUser: LoginSessionIdUser? = null
 
     init {
@@ -36,26 +37,40 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun hasStoredLoginData(): Boolean {
+    fun hasStoredLoginData(): Boolean {
         val username = loginRepository.getStoredUsername()
         val password = loginRepository.getStoredPassword()
         return !(username.isNullOrEmpty() || password.isNullOrEmpty())
     }
 
-/*
-    fun getToken() = viewModelScope.launch(Dispatchers.IO) {
-        try {
-            tokenData = loginRepository.getRequestToken().body()
-        } catch (e: Exception) {
-            loginState
+    fun loginAsGuest() {
+        viewModelScope.launch(Dispatchers.IO) {
+            loginState.isLoading.value = true
+
+//            if (tokenData == null || tokenData?.success == false) loginRepository.getTokenData()
+//            sessionIdGuest = loginRepository.getSessionIdForGuests()
+//
+//            loginState.isLoading.value = false
+            loginState.isLoginSuccessful.value = sessionIdGuest?.success == true
         }
     }
-*/
 
-    // if yes, use it and get a token and then getting a session with the given data
+    fun loginAsUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            loginState.isLoading.value = true
 
-
-    /*withContext(Dispatchers.IO) {
-    tokenData = loginRepository.getRequestToken().body()
-}*/
+//            if (tokenData == null || tokenData?.success == false) loginRepository.getTokenData()
+//
+//            sessionIdUser = tokenData?.requestToken?.let { requestToken ->
+//                loginRepository.getSessionIdWithUserData(
+//                    username = loginState.usernameInput.value,
+//                    password = loginState.passwordInput.value,
+//                    requestToken = requestToken
+//                )
+//            }
+//
+//            loginState.isLoading.value = false
+//            loginState.isLoginSuccessful.value = sessionIdUser?.success == true
+        }
+    }
 }
