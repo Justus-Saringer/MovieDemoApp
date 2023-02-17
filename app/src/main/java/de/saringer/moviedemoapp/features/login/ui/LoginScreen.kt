@@ -10,11 +10,14 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -144,6 +147,8 @@ private fun TitleArea() {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?) {
+    val focusRequester = remember { FocusRequester() }
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         // username
         OutlinedTextField(
@@ -154,6 +159,11 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
             onValueChange = { newValue ->
                 state.usernameInput.value = newValue
             },
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusRequester.requestFocus()
+                }
+            ),
             enabled = !state.isLoading.value,
             trailingIcon = {
                 if (state.usernameInput.value.isNotBlank()) {
@@ -183,7 +193,7 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
 
         // password
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),
             value = state.passwordInput.value,
             maxLines = 1,
             label = { Text(text = stringResource(id = R.string.password)) },
@@ -194,6 +204,7 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
             keyboardActions = KeyboardActions(
                 onDone = {
                     keyboardController?.hide()
+                    // TODO: login request
                 }
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
