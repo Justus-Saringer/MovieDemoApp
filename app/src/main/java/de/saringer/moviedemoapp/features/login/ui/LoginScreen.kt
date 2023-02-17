@@ -21,6 +21,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -32,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
+import de.saringer.moviedemoapp.shared.extensions.noRippleClickable
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.orange
 import kotlinx.coroutines.launch
@@ -45,6 +47,7 @@ fun LoginScreen(
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
         scaffoldState = rememberScaffoldState(
@@ -66,7 +69,10 @@ fun LoginScreen(
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .noRippleClickable() {
+                    focusManager.clearFocus()
+                },
             color = MaterialTheme.colors.background
         ) {
             Column(
