@@ -79,7 +79,9 @@ fun LoginScreen(
 
                 TitleArea()
 
-                UserInputArea(state = state, keyboardController = keyboardController)
+                UserInputArea(state = state, keyboardController = keyboardController) {
+                    onSignInAsUserClick()
+                }
 
                 Spacer(modifier = Modifier.size(16.dp))
 
@@ -146,7 +148,11 @@ private fun TitleArea() {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareKeyboardController?) {
+private fun UserInputArea(
+    state: LoginScreenState,
+    keyboardController: SoftwareKeyboardController?,
+    onSignInAsUserClick: () -> Unit,
+) {
     val focusRequester = remember { FocusRequester() }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -203,8 +209,9 @@ private fun UserInputArea(state: LoginScreenState, keyboardController: SoftwareK
             singleLine = true,
             keyboardActions = KeyboardActions(
                 onDone = {
+                    state.isLoading.value = true
                     keyboardController?.hide()
-                    // TODO: login request
+                    onSignInAsUserClick()
                 }
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -245,6 +252,7 @@ private fun ButtonArea(
     onSnackBar: () -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        // user login
         Button(
             modifier = Modifier
                 .fillMaxWidth()
@@ -254,6 +262,7 @@ private fun ButtonArea(
                 keyboardController?.hide()
                 onSnackBar()
                 if (state.hasPageError) return@Button
+                state.isLoading.value = true
                 onSignInAsUserClick()
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = orange)
@@ -263,6 +272,7 @@ private fun ButtonArea(
 
         Spacer(modifier = Modifier.size(8.dp))
 
+        // guest login
         Button(
             modifier = Modifier
                 .fillMaxWidth()
@@ -273,6 +283,7 @@ private fun ButtonArea(
                 keyboardController?.hide()
                 onSnackBar()
                 if (state.hasPageError) return@Button
+                state.isLoading.value = true
                 onSignInAsGuestClick()
             },
             colors = ButtonDefaults.buttonColors(

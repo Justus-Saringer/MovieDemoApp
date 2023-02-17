@@ -1,5 +1,6 @@
 package de.saringer.moviedemoapp.graphsandnavigation
 
+import android.provider.DocumentsContract.Root
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,12 +27,12 @@ fun RootNavGraph(navController: NavHostController) {
             LoginScreen(
                 state = loginViewModel.loginState,
                 onSignInAsUserClick = {
-                    // TODO: add navigation logic here
                     loginViewModel.loginAsUser()
+                    if (loginViewModel.sessionIdUser?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
                 },
                 onSignInAsGuestClick = {
-                    // TODO: same for this one here
                     loginViewModel.loginAsGuest()
+                    if (loginViewModel.sessionIdGuest?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
                 },
             )
         }

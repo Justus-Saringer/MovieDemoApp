@@ -51,7 +51,6 @@ class LoginViewModel @Inject constructor(
 //            sessionIdGuest = loginRepository.getSessionIdForGuests()
 //
 //            loginState.isLoading.value = false
-            loginState.isLoginSuccessful.value = sessionIdGuest?.success == true
         }
     }
 
@@ -70,7 +69,6 @@ class LoginViewModel @Inject constructor(
 //            }
 //
 //            loginState.isLoading.value = false
-//            loginState.isLoginSuccessful.value = sessionIdUser?.success == true
         }
     }
 }
