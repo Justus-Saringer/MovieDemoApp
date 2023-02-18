@@ -12,20 +12,20 @@ import retrofit2.http.Query
 interface LoginApi {
 
     // region login
-    @GET("/authentication/token/new?api_key=${BuildConfig.APIKEY}")
+    @GET("authentication/token/new?api_key=${BuildConfig.APIKEY}")
     suspend fun getRequestToken(): LoginTokenRemote
 
-    @POST("/authentication/guest_session/new?api_key=${BuildConfig.APIKEY}")
+    @POST("authentication/guest_session/new?api_key=${BuildConfig.APIKEY}")
     suspend fun getSessionIdForGuests(): LoginGuestSessionRemote
 
-    @POST("/authentication/token/validate_with_login")
+    @POST("authentication/token/validate_with_login")
     suspend fun getSessionIdWithUserData(
         @Query("username") username: String,
         @Query("password") password: String,
         @Query("request_token") requestToken: String
     ): LoginSessionIdUserRemote
 
-    @POST("/authentication/session")
+    @POST("authentication/session")
     suspend fun deleteSession(
         @Query("session_id") sessionId: String
     ) : Response<Boolean>
