@@ -20,12 +20,12 @@ interface LoginApi {
 
     @POST("authentication/token/validate_with_login")
     suspend fun getSessionIdWithUserData(
+        @Query("request_token") requestToken: String,
         @Query("username") username: String,
         @Query("password") password: String,
-        @Query("request_token") requestToken: String
     ): LoginSessionIdUserRemote
 
-    @POST("authentication/session")
+    @POST("authentication/session?api_key=${BuildConfig.APIKEY}")
     suspend fun deleteSession(
         @Query("session_id") sessionId: String
     ) : Response<Boolean>
