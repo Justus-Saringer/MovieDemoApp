@@ -45,8 +45,4 @@ object DataModule {
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
-
-    /*@Provides
-    @Singleton
-    fun provideTheMovieDatabase(@ApplicationContext appContext: Context):*/
 }
