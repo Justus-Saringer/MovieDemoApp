@@ -18,7 +18,7 @@ interface LoginApi {
     @POST("authentication/guest_session/new?api_key=${BuildConfig.APIKEY}")
     suspend fun getSessionIdForGuests(): LoginGuestSessionRemote
 
-    @POST("authentication/token/validate_with_login")
+    @POST("authentication/token/validate_with_login?api_key=${BuildConfig.APIKEY}")
     suspend fun getSessionIdWithUserData(
         @Query("request_token") requestToken: String,
         @Query("username") username: String,
