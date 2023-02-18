@@ -30,13 +30,15 @@ class LoginRepository @Inject constructor(
         username: String,
         password: String,
         requestToken: String
-    ): LoginSessionIdUser {
-        return api.getSessionIdWithUserData(
-            username = username, password = password, requestToken = requestToken
-        ).toLoginSessionIdUser()
+    ): LoginSessionIdUser? {
+        return runCatching {
+            api.getSessionIdWithUserData(
+                username = username, password = password, requestToken = requestToken
+            ).toLoginSessionIdUser()
+        }.getOrNull()
     }
 
-    suspend fun deleteSession(currentSession: String) = api.deleteSession(currentSession)
+    suspend fun deleteSession(currentSession: String) = kotlin.runCatching { api.deleteSession(currentSession) }
 
     fun saveLoginData(username: String, password: String) {
         CoroutineScope(Dispatchers.Default).launch {
@@ -69,7 +71,9 @@ class LoginRepository @Inject constructor(
     }
 
     suspend fun getTokenData(): LoginToken? {
-        return fetchToken()
+        return kotlin.runCatching {
+             fetchToken()
+        }.getOrNull()
     }
 
     private suspend fun fetchToken() = withContext(Dispatchers.IO) {
