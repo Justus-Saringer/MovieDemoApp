@@ -1,7 +1,5 @@
 package de.saringer.moviedemoapp.features.login
 
-import android.app.Application
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

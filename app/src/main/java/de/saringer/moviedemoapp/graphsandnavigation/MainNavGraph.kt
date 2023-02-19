@@ -5,7 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.saringer.moviedemoapp.features.Search.SearchScreen
+import de.saringer.moviedemoapp.features.search.SearchScreen
+import de.saringer.moviedemoapp.features.search.SearchScreenState
 import de.saringer.moviedemoapp.features.settings.SettingsScreen
 import de.saringer.moviedemoapp.features.yours.YoursScreen
 
@@ -19,8 +20,10 @@ fun MainNavGraph(navController: NavHostController, paddingValues: PaddingValues)
         }
 
         composable(BottomNavItem.Search.route) {
-            SearchScreen(paddingValues = paddingValues)
-            // TODO: create SearchScreenState
+            // TODO: put SearchScreenState into a viewModel
+            SearchScreen(paddingValues = paddingValues, state = SearchScreenState()) {
+
+            }
         }
 
         composable(BottomNavItem.Yours.route) {
