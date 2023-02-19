@@ -14,14 +14,12 @@ class LoginScreenState constructor(
     val isLoading = mutableStateOf(isLoading)
     val isPasswordVisible = mutableStateOf(isPasswordVisible)
     val snackBarHostState = SnackbarHostState()
-    val isLoginSuccessful = mutableStateOf(false)
 
     private val areInputFieldsEmpty: Boolean
         get() = usernameInput.value.isEmpty() || passwordInput.value.isEmpty()
 
     val hasPageError: Boolean
-        get() = areInputFieldsEmpty ||
-                isLoginSuccessful.value
+        get() = areInputFieldsEmpty
 
     val errorText: String
         get() = when {
