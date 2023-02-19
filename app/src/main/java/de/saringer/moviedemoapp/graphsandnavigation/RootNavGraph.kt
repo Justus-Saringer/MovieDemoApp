@@ -3,6 +3,7 @@ package de.saringer.moviedemoapp.graphsandnavigation
 import android.provider.DocumentsContract.Root
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.currentRecomposeScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -11,6 +12,7 @@ import de.saringer.moviedemoapp.features.MainScreen
 import de.saringer.moviedemoapp.features.login.LoginViewModel
 import de.saringer.moviedemoapp.features.login.ui.LoadingScreen
 import de.saringer.moviedemoapp.features.login.ui.LoginScreen
+import okhttp3.internal.wait
 
 @Composable
 fun RootNavGraph(navController: NavHostController) {
@@ -27,12 +29,14 @@ fun RootNavGraph(navController: NavHostController) {
             LoginScreen(
                 state = loginViewModel.loginState,
                 onSignInAsUserClick = {
-                    loginViewModel.loginAsUser()
-                    if (loginViewModel.sessionIdUser?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
+                    loginViewModel.loginAsUser() {
+                        if (loginViewModel.sessionIdUser?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
+                    }
                 },
                 onSignInAsGuestClick = {
-                    loginViewModel.loginAsGuest()
-                    if (loginViewModel.sessionIdGuest?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
+                    loginViewModel.loginAsGuest() {
+                        if (loginViewModel.sessionIdGuest?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
+                    }
                 },
             )
         }

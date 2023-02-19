@@ -1,5 +1,7 @@
 package de.saringer.moviedemoapp.features.login
 
+import android.app.Application
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,17 +44,18 @@ class LoginViewModel @Inject constructor(
         return !(username.isNullOrEmpty() || password.isNullOrEmpty())
     }
 
-    fun loginAsGuest() {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun loginAsGuest(invokeAfter: () -> Unit) {
+        viewModelScope.launch(Dispatchers.Main) {
             if (tokenData == null || tokenData?.success == false) loginRepository.getTokenData()
             sessionIdGuest = loginRepository.getSessionIdForGuests()
 
             loginState.isLoading.value = false
+            invokeAfter()
         }
     }
 
-    fun loginAsUser() {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun loginAsUser(invokeAfter: () -> Unit) {
+        viewModelScope.launch(Dispatchers.Main) {
             if (tokenData == null || tokenData?.success == false) loginRepository.getTokenData()
 
             sessionIdUser = tokenData?.requestToken?.let { requestToken ->
@@ -64,6 +67,7 @@ class LoginViewModel @Inject constructor(
             }
 
             loginState.isLoading.value = false
+            invokeAfter()
         }
     }
 }
