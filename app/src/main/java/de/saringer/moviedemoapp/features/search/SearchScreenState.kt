@@ -9,7 +9,7 @@ data class SearchScreenState(
             ChipState(text = mutableStateOf("Movies")),
             ChipState(text = mutableStateOf("TV Shows")),
             ChipState(text = mutableStateOf("Companies")),
-            ChipState(text = mutableStateOf("Multiple")),
+            ChipState(text = mutableStateOf("all")),
         )
     )
 )

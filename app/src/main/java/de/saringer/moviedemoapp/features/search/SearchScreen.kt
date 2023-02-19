@@ -148,8 +148,13 @@ private fun ChipFilter(state: SearchBarState) {
 
             Chip(
                 onClick = {
-                    state.selectedChip.value = chipState.text.value
-                    chipState.isSelected.value = true
+                    if (state.selectedChip.value == chipState.text.value) {
+                        state.selectedChip.value = ""
+                        chipState.isSelected.value = false
+                    } else {
+                        state.selectedChip.value = chipState.text.value
+                        chipState.isSelected.value = true
+                    }
                 },
                 content = {
                     Text(text = chipState.text.value)
