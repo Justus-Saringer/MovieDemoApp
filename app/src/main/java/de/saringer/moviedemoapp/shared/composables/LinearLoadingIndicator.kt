@@ -1,6 +1,7 @@
 package de.saringer.moviedemoapp.shared.composables
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ehsanmsz.mszprogressindicator.progressindicator.LineScaleProgressIndicator
@@ -8,8 +9,9 @@ import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.yellow
 
 @Composable
-fun LinearLoadingIndicator() {
+fun LinearLoadingIndicator(modifier: Modifier = Modifier) {
     LineScaleProgressIndicator(
+        modifier = modifier,
         color = yellow,
         animationDuration = 800,
         animationDelay = 200,
