@@ -1,5 +1,8 @@
 package de.saringer.moviedemoapp.shared.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,18 +16,23 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Movie
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import de.saringer.moviedemoapp.R
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import coil.compose.SubcomposeAsyncImage
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.green
 import de.saringer.moviedemoapp.ui.theme.orange
@@ -43,20 +51,55 @@ fun MoviePreviewItem(
             onClick()
         }
     ) {
-        Box {
-            Card() {
-                AsyncImage(
-                    modifier = Modifier
-                        .height(168.dp)
-                        .width(124.dp),
+        val isImageLoading = remember { mutableStateOf(false) }
+
+        Card() {
+            ConstraintLayout(
+                modifier = Modifier
+                    .height(168.dp)
+                    .width(124.dp)
+            ) {
+                val (image, popularityIndicator, loadingSpinner) = createRefs()
+
+                SubcomposeAsyncImage(
+                    modifier = Modifier.constrainAs(image) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                        height = Dimension.fillToConstraints
+                        width = Dimension.fillToConstraints
+                    },
                     model = "https://image.tmdb.org/t/p/original$posterPath",
-                    placeholder = painterResource(id = R.drawable.camera_placeholder_background),
+                    contentScale = ContentScale.Fit,
                     contentDescription = null,
-                    contentScale = ContentScale.Crop
+                    error = { rememberVectorPainter(image = Icons.Default.Movie) },
+                    onLoading = { isImageLoading.value = true },
+                    onSuccess = { isImageLoading.value = false }
+                )
+
+                this@Column.AnimatedVisibility(
+                    modifier = Modifier.constrainAs(loadingSpinner) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    },
+                    visible = isImageLoading.value,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    LinearLoadingIndicator()
+                }
+
+                Popularity(
+                    modifier = Modifier.constrainAs(popularityIndicator) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                    },
+                    popularity = popularity
                 )
             }
-
-            Popularity(popularity)
         }
 
         // title
@@ -81,14 +124,14 @@ fun MoviePreviewItem(
 }
 
 @Composable
-private fun Popularity(popularity: Int) {
+private fun Popularity(modifier: Modifier = Modifier, popularity: Int) {
     val circleIndicatorColor = when {
         popularity >= 70 -> green
         popularity in 70 downTo 45 -> yellow
         else -> orange
     }
 
-    Box(modifier = Modifier.padding(2.dp), contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.padding(2.dp), contentAlignment = Alignment.Center) {
         CircularProgressIndicator(
             progress = 1f,
             modifier = Modifier
