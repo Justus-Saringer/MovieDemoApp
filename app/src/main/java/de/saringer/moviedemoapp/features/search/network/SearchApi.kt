@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface SearchApi {
+    // TODO: create Responses
     @GET("search/companies?api_key=${BuildConfig.APIKEY}")
     suspend fun searchForCompanies(
         @Query("page") page: Int,
