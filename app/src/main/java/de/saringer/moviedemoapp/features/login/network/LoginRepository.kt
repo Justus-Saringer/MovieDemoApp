@@ -8,8 +8,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdUser
 import de.saringer.moviedemoapp.features.login.network.domain.LoginToken
 import de.saringer.moviedemoapp.features.login.network.extension.toLoginSessionIdGuest
-import de.saringer.moviedemoapp.features.login.network.extension.toLoginToken
 import de.saringer.moviedemoapp.features.login.network.extension.toLoginSessionIdUser
+import de.saringer.moviedemoapp.features.login.network.extension.toLoginToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,14 +31,18 @@ class LoginRepository @Inject constructor(
         password: String,
         requestToken: String
     ): LoginSessionIdUser? {
-        return runCatching {
-            api.getSessionIdWithUserData(
-                username = username, password = password, requestToken = requestToken
-            ).toLoginSessionIdUser()
-        }.getOrNull()
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                api.getSessionIdWithUserData(
+                    username = username, password = password, requestToken = requestToken
+                ).toLoginSessionIdUser()
+            }.getOrNull()
+        }
     }
 
-    suspend fun deleteSession(currentSession: String) = kotlin.runCatching { api.deleteSession(currentSession) }
+    suspend fun deleteSession(currentSession: String) = withContext(Dispatchers.IO) {
+        runCatching { api.deleteSession(currentSession) }
+    }
 
     fun saveLoginData(username: String, password: String) {
         CoroutineScope(Dispatchers.Default).launch {
