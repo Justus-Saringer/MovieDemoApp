@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.network.model
+package de.saringer.moviedemoapp.features.search.datasources.network.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

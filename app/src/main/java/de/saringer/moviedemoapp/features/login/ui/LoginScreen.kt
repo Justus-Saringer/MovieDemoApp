@@ -287,7 +287,6 @@ private fun ButtonArea(
             enabled = !state.isLoading.value,
             onClick = {
                 keyboardController?.hide()
-                onSnackBar()
                 state.isLoading.value = true
                 onSignInAsGuestClick()
             },

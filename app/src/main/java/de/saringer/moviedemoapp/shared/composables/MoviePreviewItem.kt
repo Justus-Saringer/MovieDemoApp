@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -37,19 +38,22 @@ import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.green
 import de.saringer.moviedemoapp.ui.theme.orange
 import de.saringer.moviedemoapp.ui.theme.yellow
+import kotlin.math.roundToInt
 
 @Composable
 fun MoviePreviewItem(
     title: String,
     posterPath: String,
     releaseDate: String,
-    popularity: Int,
+    popularity: Double,
     onClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.clickable {
-            onClick()
-        }
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .clickable {
+                onClick()
+            }
     ) {
         val isImageLoading = remember { mutableStateOf(false) }
 
@@ -97,7 +101,7 @@ fun MoviePreviewItem(
                         start.linkTo(parent.start)
                         top.linkTo(parent.top)
                     },
-                    popularity = popularity
+                    popularity = popularity.roundToInt()
                 )
             }
         }
@@ -143,7 +147,7 @@ private fun Popularity(modifier: Modifier = Modifier, popularity: Int) {
         )
 
         CircularProgressIndicator(
-            progress = (popularity / 100f),
+            progress = (popularity / 100).toFloat(),
             modifier = Modifier.size(24.dp),
             strokeWidth = 2.dp,
             color = circleIndicatorColor
@@ -162,7 +166,7 @@ private fun MoviePreviewItemPreview() {
             title = "catch me if you can",
             posterPath = "/sdYgEkKCDPWNU6KnoL4qd8xZ4w7.jpg",
             releaseDate = "23.04.2023",
-            popularity = 80
+            popularity = 80.0
         ) {}
     }
 }
@@ -175,7 +179,7 @@ private fun MoviePreviewItemMiddleScorePreview() {
             title = "catch me if you can",
             posterPath = "/sdYgEkKCDPWNU6KnoL4qd8xZ4w7.jpg",
             releaseDate = "23.04.2023",
-            popularity = 55
+            popularity = 55.0
         ) {}
     }
 }
@@ -188,7 +192,7 @@ private fun MoviePreviewItemLowScorePreview() {
             title = "catch me if you can",
             posterPath = "/sdYgEkKCDPWNU6KnoL4qd8xZ4w7.jpg",
             releaseDate = "23.04.2023",
-            popularity = 32
+            popularity = 32.0
         ) {}
     }
 }

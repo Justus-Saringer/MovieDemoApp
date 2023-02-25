@@ -1,16 +1,22 @@
-package de.saringer.moviedemoapp.features.search.network
+package de.saringer.moviedemoapp.features.search.datasources.network
 
-import de.saringer.moviedemoapp.features.search.network.domain.DiscoverModel
-import de.saringer.moviedemoapp.features.search.network.extension.toDiscoverModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import de.saringer.moviedemoapp.features.search.datasources.pagingsources.MostPopularMoviesPagingSource
 import javax.inject.Inject
 
 class LandingPageRepository @Inject constructor(
     private val landingPageApi: LandingPageApi
 ) {
 
-    suspend fun getMostPopularMovies(page: Int): DiscoverModel? {
+    fun getMostPopularMovies() = Pager(
+        config = PagingConfig(pageSize = 15),
+        pagingSourceFactory = { MostPopularMoviesPagingSource(landingPageApi) }
+    ).flow
+
+
+    // not needed due to pagination
+/*    suspend fun getMostPopularMovies(page: Int): DiscoverModel? {
         return withContext(Dispatchers.IO) {
             runCatching {
                 landingPageApi.getMostPopularMovies(page = page).toDiscoverModel()
@@ -40,5 +46,5 @@ class LandingPageRepository @Inject constructor(
                 landingPageApi.getHighestRatedScienceFictionMovies(page = page).toDiscoverModel()
             }.getOrNull()
         }
-    }
+    }*/
 }

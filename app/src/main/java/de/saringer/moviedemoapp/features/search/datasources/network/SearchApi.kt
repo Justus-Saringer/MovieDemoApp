@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.network
+package de.saringer.moviedemoapp.features.search.datasources.network
 
 import de.saringer.moviedemoapp.BuildConfig
 import retrofit2.http.GET

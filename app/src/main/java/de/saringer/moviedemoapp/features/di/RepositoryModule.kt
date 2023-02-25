@@ -7,8 +7,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import de.saringer.moviedemoapp.features.login.network.LoginApi
 import de.saringer.moviedemoapp.features.login.network.LoginRepository
-import de.saringer.moviedemoapp.features.search.network.LandingPageApi
-import de.saringer.moviedemoapp.features.search.network.LandingPageRepository
+import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageApi
+import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageRepository
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)

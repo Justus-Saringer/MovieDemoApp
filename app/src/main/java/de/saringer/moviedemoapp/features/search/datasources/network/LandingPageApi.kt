@@ -1,7 +1,7 @@
-package de.saringer.moviedemoapp.features.search.network
+package de.saringer.moviedemoapp.features.search.datasources.network
 
 import de.saringer.moviedemoapp.BuildConfig
-import de.saringer.moviedemoapp.features.search.network.model.DiscoverResponse
+import de.saringer.moviedemoapp.features.search.datasources.network.model.DiscoverResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

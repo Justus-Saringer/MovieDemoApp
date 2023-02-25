@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.saringer.moviedemoapp.features.search.SearchScreen
-import de.saringer.moviedemoapp.features.search.SearchScreenState
+import de.saringer.moviedemoapp.features.search.ui.SearchScreen
+import de.saringer.moviedemoapp.features.search.ui.SearchScreenState
 import de.saringer.moviedemoapp.features.settings.SettingsScreen
 import de.saringer.moviedemoapp.features.yours.YoursScreen
 
