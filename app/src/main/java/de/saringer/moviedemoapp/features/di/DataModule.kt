@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import de.saringer.moviedemoapp.features.login.network.LoginApi
+import de.saringer.moviedemoapp.features.search.network.LandingPageApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -23,6 +24,12 @@ object DataModule {
     @Singleton
     fun provideLoginApi(retrofit: Retrofit): LoginApi {
         return retrofit.create(LoginApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLandingPageApi(retrofit: Retrofit): LandingPageApi {
+        return retrofit.create(LandingPageApi::class.java)
     }
 
     @Provides
