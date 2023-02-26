@@ -83,7 +83,7 @@ private fun PopularMoviesRow(viewModel: SearchViewModel) {
             movie?.let {
                 Spacer(modifier = Modifier.size(8.dp))
                 MoviePreviewItem(
-                    popularity = movie.popularity,
+                    voteAverage = movie.popularity,
                     title = movie.title,
                     posterPath = movie.posterPath.orEmpty(),
                     releaseDate = movie.releaseDate.orEmpty(),

@@ -25,18 +25,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.SubcomposeAsyncImage
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.green
 import de.saringer.moviedemoapp.ui.theme.orange
+import de.saringer.moviedemoapp.ui.theme.white
 import de.saringer.moviedemoapp.ui.theme.yellow
 import kotlin.math.roundToInt
 
@@ -45,7 +46,7 @@ fun MoviePreviewItem(
     title: String,
     posterPath: String,
     releaseDate: String,
-    popularity: Double,
+    voteAverage: Double,
     onClick: () -> Unit
 ) {
     Column(
@@ -101,7 +102,7 @@ fun MoviePreviewItem(
                         start.linkTo(parent.start)
                         top.linkTo(parent.top)
                     },
-                    popularity = popularity.roundToInt()
+                    popularity = voteAverage
                 )
             }
         }
@@ -128,32 +129,40 @@ fun MoviePreviewItem(
 }
 
 @Composable
-private fun Popularity(modifier: Modifier = Modifier, popularity: Int) {
+private fun Popularity(modifier: Modifier = Modifier, popularity: Double) {
     val circleIndicatorColor = when {
-        popularity >= 70 -> green
-        popularity in 70 downTo 45 -> yellow
+        popularity.roundToInt() >= 7 -> green
+        popularity.roundToInt() in 7 downTo 4 -> yellow
         else -> orange
     }
 
-    Box(modifier = modifier.padding(2.dp), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = modifier
+            .padding(2.dp)
+            .clip(CircleShape)
+            .background(MaterialTheme.colors.background)
+            .padding(2.dp),
+        contentAlignment = Alignment.Center
+    ) {
         CircularProgressIndicator(
             progress = 1f,
-            modifier = Modifier
-                .clip(CircleShape)
-                .size(24.dp)
-                .background(Color(red = 255, blue = 255, green = 255, alpha = 125)),
+            modifier = Modifier.size(26.dp),
             strokeWidth = 2.dp,
             color = MaterialTheme.colors.primary
         )
 
         CircularProgressIndicator(
-            progress = (popularity / 100).toFloat(),
-            modifier = Modifier.size(24.dp),
+            progress = (popularity / 10).toFloat(),
+            modifier = Modifier.size(26.dp),
             strokeWidth = 2.dp,
             color = circleIndicatorColor
         )
 
-        Text(text = popularity.toString(), style = MaterialTheme.typography.body2)
+        Text(
+            text = popularity.toString(),
+            style = MaterialTheme.typography.body1.copy(fontSize = 12.sp),
+            color = white
+        )
     }
 }
 
@@ -166,7 +175,7 @@ private fun MoviePreviewItemPreview() {
             title = "catch me if you can",
             posterPath = "/sdYgEkKCDPWNU6KnoL4qd8xZ4w7.jpg",
             releaseDate = "23.04.2023",
-            popularity = 80.0
+            voteAverage = 8.0
         ) {}
     }
 }
@@ -179,7 +188,7 @@ private fun MoviePreviewItemMiddleScorePreview() {
             title = "catch me if you can",
             posterPath = "/sdYgEkKCDPWNU6KnoL4qd8xZ4w7.jpg",
             releaseDate = "23.04.2023",
-            popularity = 55.0
+            voteAverage = 5.5
         ) {}
     }
 }
@@ -192,7 +201,7 @@ private fun MoviePreviewItemLowScorePreview() {
             title = "catch me if you can",
             posterPath = "/sdYgEkKCDPWNU6KnoL4qd8xZ4w7.jpg",
             releaseDate = "23.04.2023",
-            popularity = 32.0
+            voteAverage = 3.2
         ) {}
     }
 }

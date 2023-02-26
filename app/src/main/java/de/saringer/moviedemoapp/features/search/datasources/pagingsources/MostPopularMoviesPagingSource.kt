@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageApi
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.Movie
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toDiscoverModel
+import java.util.concurrent.CancellationException
 import javax.inject.Inject
 
 class MostPopularMoviesPagingSource @Inject constructor(
@@ -28,6 +29,8 @@ class MostPopularMoviesPagingSource @Inject constructor(
                 prevKey = if (page == 1) null else page.minus(1),
                 nextKey = if (response?.results?.isEmpty() == true) null else page.plus(1)
             )
+        } catch (ce: CancellationException) {
+            throw ce
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
