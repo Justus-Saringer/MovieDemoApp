@@ -17,23 +17,24 @@ import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Movie
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import coil.compose.SubcomposeAsyncImage
+import androidx.core.graphics.drawable.toDrawable
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.green
 import de.saringer.moviedemoapp.ui.theme.orange
@@ -62,11 +63,11 @@ fun MoviePreviewItem(
             ConstraintLayout(
                 modifier = Modifier
                     .height(168.dp)
-                    .width(124.dp)
+                    .width(112.dp)
             ) {
                 val (image, popularityIndicator, loadingSpinner) = createRefs()
 
-                SubcomposeAsyncImage(
+                AsyncImage(
                     modifier = Modifier.constrainAs(image) {
                         start.linkTo(parent.start)
                         top.linkTo(parent.top)
@@ -75,12 +76,15 @@ fun MoviePreviewItem(
                         height = Dimension.fillToConstraints
                         width = Dimension.fillToConstraints
                     },
-                    model = "https://image.tmdb.org/t/p/original$posterPath",
-                    contentScale = ContentScale.Fit,
                     contentDescription = null,
-                    error = { rememberVectorPainter(image = Icons.Default.Movie) },
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data("https://image.tmdb.org/t/p/original$posterPath")
+                        .crossfade(true)
+                        .placeholder(R.drawable.ic_launcher_background.toDrawable())
+                        .build(),
+                    contentScale = ContentScale.Crop,
                     onLoading = { isImageLoading.value = true },
-                    onSuccess = { isImageLoading.value = false }
+                    onSuccess = { isImageLoading.value = false },
                 )
 
                 this@Column.AnimatedVisibility(
@@ -109,7 +113,7 @@ fun MoviePreviewItem(
 
         // title
         Text(
-            modifier = Modifier.width(124.dp),
+            modifier = Modifier.width(112.dp),
             text = title,
             color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.body2,
@@ -119,7 +123,7 @@ fun MoviePreviewItem(
 
         // release date
         Text(
-            modifier = Modifier.width(124.dp),
+            modifier = Modifier.width(112.dp),
             text = releaseDate,
             color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.overline,

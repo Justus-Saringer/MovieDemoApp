@@ -27,7 +27,7 @@ fun MovieRemote.toMovie() = Movie(
     releaseDate = releaseDate,
     title = title ?: "Title",
     video = video ?: false,
-    voteAverage = voteAverage,
+    voteAverage = voteAverage ?: 0.0,
     voteCount = voteCount,
     id = id ?: Random.nextInt(999999)
 )
