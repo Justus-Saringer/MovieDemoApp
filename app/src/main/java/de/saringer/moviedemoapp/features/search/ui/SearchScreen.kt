@@ -6,7 +6,6 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.Chip
@@ -37,17 +35,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.features.search.SearchViewModel
-import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
-import de.saringer.moviedemoapp.shared.composables.MoviePreviewItem
+import de.saringer.moviedemoapp.features.search.ui.landingpage.PopularMoviesRow
 import de.saringer.moviedemoapp.shared.extensions.noRippleClickable
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.lightBlue
@@ -68,71 +61,6 @@ fun SearchScreen(paddingValues: PaddingValues, state: SearchScreenState, onSearc
         Spacer(modifier = Modifier.size(16.dp))
 
         PopularMoviesRow(viewModel)
-    }
-}
-
-@Composable
-private fun PopularMoviesRow(viewModel: SearchViewModel) {
-    val movies = viewModel.getMostPopularMovies().collectAsLazyPagingItems()
-
-    LazyRow {
-        items(
-            items = movies,
-            key = { it.id }
-        ) { movie ->
-            movie?.let {
-                Spacer(modifier = Modifier.size(8.dp))
-                MoviePreviewItem(
-                    voteAverage = movie.voteAverage,
-                    title = movie.title,
-                    posterPath = movie.posterPath.orEmpty(),
-                    releaseDate = movie.releaseDate.orEmpty(),
-                    onClick = { /* TODO: implement navigation for click on this movie */ },
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-            }
-        }
-
-        // First Load
-        when (val state = movies.loadState.refresh) {
-            is LoadState.Error -> {
-                item { Text(text = "An Error occurred\n${state.error}", textAlign = TextAlign.Center) }
-            }
-
-            is LoadState.Loading -> {
-                item {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Loading")
-                        Spacer(modifier = Modifier.size(8.dp))
-                        LinearLoadingIndicator()
-                    }
-                }
-            }
-            else -> {
-                item { Text(text = "Something went Wrong") }
-            }
-        }
-
-        when (val state = movies.loadState.append) { // Pagination
-            is LoadState.Error -> {
-                item { Text(text = "An Error occurred\n${state.error}", textAlign = TextAlign.Center) }
-            }
-            is LoadState.Loading -> { // Pagination Loading UI
-                item {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        Text(text = "Pagination Loading")
-                        Spacer(modifier = Modifier.size(8.dp))
-                        LinearLoadingIndicator()
-                    }
-                }
-            }
-            else -> {}
-        }
     }
 }
 
