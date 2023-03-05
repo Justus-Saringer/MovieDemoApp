@@ -67,7 +67,7 @@ fun SearchAndLandingPage(
 
         when {
             state.searchBarState.searchInput.value.isNotEmpty() -> {
-                SearchResultsPage(paddingValues)
+                SearchResultsPage()
             }
             else -> LandingPage(viewModel = viewModel, onMovieDetails = onMovieDetails)
         }
