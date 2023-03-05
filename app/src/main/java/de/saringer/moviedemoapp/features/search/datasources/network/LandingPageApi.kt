@@ -3,10 +3,19 @@ package de.saringer.moviedemoapp.features.search.datasources.network
 import de.saringer.moviedemoapp.BuildConfig
 import de.saringer.moviedemoapp.features.search.datasources.network.model.DiscoverResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 //    https://developers.themoviedb.org/3/discover/movie-discover
+//    https://developers.themoviedb.org/3/movies/get-movie-details
 interface LandingPageApi {
+
+    @GET("/movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String? = BuildConfig.APIKEY,
+    ): MovieDetailsResponse
+
     @GET("discover/movie?sort_by=popularity.desc")
     suspend fun getMostPopularMovies(
         @Query("api_key") apiKey: String? = BuildConfig.APIKEY,
