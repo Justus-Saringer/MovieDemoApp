@@ -33,6 +33,7 @@ fun SearchScreen(paddingValues: PaddingValues, state: SearchScreenState) {
             val movieId = backStackEntry.arguments?.getInt("movieId")
                 ?: throw IllegalArgumentException("Invalid navigation argument on route \"movie/{movieId}\"")
             // MoviePage
+
         }
     }
 }
