@@ -14,6 +14,6 @@ fun SearchResultsPage(paddingValues: PaddingValues) {
 @Composable
 private fun SearchResultPagePreview() {
     MovieDemoAppTheme {
-        SearchResultsPage(paddingValues)
+        SearchResultsPage(paddingValues = PaddingValues())
     }
 }
