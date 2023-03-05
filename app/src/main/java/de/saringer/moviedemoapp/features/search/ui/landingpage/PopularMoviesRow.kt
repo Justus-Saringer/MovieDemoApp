@@ -20,7 +20,7 @@ import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
 import de.saringer.moviedemoapp.shared.composables.MoviePreviewItem
 
 @Composable
-fun PopularMoviesRow(viewModel: SearchViewModel) {
+fun PopularMoviesRow(viewModel: SearchViewModel, onClick: (Int) -> Unit) {
     val movies = viewModel.getMostPopularMovies().collectAsLazyPagingItems()
 
     LazyRow {
@@ -35,7 +35,7 @@ fun PopularMoviesRow(viewModel: SearchViewModel) {
                     title = movie.title,
                     posterPath = movie.posterPath.orEmpty(),
                     releaseDate = movie.releaseDate.orEmpty(),
-                    onClick = { /* TODO: implement navigation for click on this movie */ },
+                    onClick = { onClick.invoke(movie.id) },
                 )
                 Spacer(modifier = Modifier.size(8.dp))
             }
@@ -79,7 +79,9 @@ fun PopularMoviesRow(viewModel: SearchViewModel) {
                     }
                 }
             }
-            else -> {}
+            else -> {
+                item { Text(text = "Something went Wrong") }
+            }
         }
     }
 }

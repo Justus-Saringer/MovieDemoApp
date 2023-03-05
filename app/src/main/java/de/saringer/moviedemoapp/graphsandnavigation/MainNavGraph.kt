@@ -20,10 +20,8 @@ fun MainNavGraph(navController: NavHostController, paddingValues: PaddingValues)
         }
 
         composable(BottomNavItem.Search.route) {
+            SearchScreen(paddingValues = paddingValues, state = SearchScreenState())
             // TODO: put SearchScreenState into a viewModel
-            SearchScreen(paddingValues = paddingValues, state = SearchScreenState()) {
-
-            }
         }
 
         composable(BottomNavItem.Yours.route) {
