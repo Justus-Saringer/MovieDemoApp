@@ -16,7 +16,7 @@ data class MovieDetails(
     val popularity: Double? = null,
     val posterPath: String? = null,
     val productionCompanies: List<ProductionCompany?> = emptyList(),
-    val productionCountries: List<ProductionCompany?> = emptyList(),
+    val productionCountries: List<ProductionCountry?> = emptyList(),
     val releaseDate: String? = null,
     val revenue: Int? = null,
     val runtime: Int? = null,
