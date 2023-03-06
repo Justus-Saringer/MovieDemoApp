@@ -3,7 +3,7 @@ package de.saringer.moviedemoapp.features.search.datasources.pagingsources
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageApi
-import de.saringer.moviedemoapp.features.search.datasources.network.domain.Movie
+import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toDiscoverModel
 import java.util.concurrent.CancellationException
 import javax.inject.Inject

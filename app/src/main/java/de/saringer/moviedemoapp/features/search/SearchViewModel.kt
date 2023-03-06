@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageRepository
-import de.saringer.moviedemoapp.features.search.datasources.network.domain.Movie
+import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

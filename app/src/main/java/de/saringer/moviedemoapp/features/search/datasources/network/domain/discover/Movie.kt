@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.datasources.network.domain
+package de.saringer.moviedemoapp.features.search.datasources.network.domain.discover
 
 data class Movie(
     val adult: Boolean? = null,

@@ -1,9 +1,9 @@
 package de.saringer.moviedemoapp.features.search.datasources.network.extension
 
-import de.saringer.moviedemoapp.features.search.datasources.network.domain.DiscoverModel
-import de.saringer.moviedemoapp.features.search.datasources.network.domain.Movie
-import de.saringer.moviedemoapp.features.search.datasources.network.model.DiscoverResponse
-import de.saringer.moviedemoapp.features.search.datasources.network.model.MovieRemote
+import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.DiscoverModel
+import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
+import de.saringer.moviedemoapp.features.search.datasources.network.model.discover.DiscoverResponse
+import de.saringer.moviedemoapp.features.search.datasources.network.model.discover.MovieRemote
 import kotlin.random.Random
 
 fun DiscoverResponse.toDiscoverModel() = results?.mapNotNull { movieRemote -> movieRemote?.toMovie() }?.let {
