@@ -15,6 +15,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import de.saringer.moviedemoapp.features.search.SearchViewModel
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 
+// pull to refresh
+// https://developer.android.com/reference/kotlin/androidx/compose/material/pullrefresh/package-summary
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MovieDetailsPage(movieId: Int, movieDetailsState: MovieDetailsState) {
