@@ -32,8 +32,8 @@ fun SearchScreen(paddingValues: PaddingValues, state: SearchScreenState) {
         composable("movie/{movieId}") { backStackEntry ->
             val movieId = backStackEntry.arguments?.getInt("movieId")
                 ?: throw IllegalArgumentException("Invalid navigation argument on route \"movie/{movieId}\"")
-            // MoviePage
-
+            viewModel.getMovieDetails(movieId)
+            MovieDetailsPage(movieId = movieId, movieDetailsState = viewModel.movieDetailsState)
         }
     }
 }

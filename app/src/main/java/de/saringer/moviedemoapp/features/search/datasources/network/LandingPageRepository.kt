@@ -2,7 +2,10 @@ package de.saringer.moviedemoapp.features.search.datasources.network
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import de.saringer.moviedemoapp.features.search.datasources.network.model.moviedetails.MovieDetailsResponse
 import de.saringer.moviedemoapp.features.search.datasources.pagingsources.MostPopularMoviesPagingSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LandingPageRepository @Inject constructor(
@@ -13,6 +16,14 @@ class LandingPageRepository @Inject constructor(
         config = PagingConfig(pageSize = 15),
         pagingSourceFactory = { MostPopularMoviesPagingSource(landingPageApi) }
     ).flow
+
+    suspend fun getMovieDetails(movieId: Int): MovieDetailsResponse? {
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                landingPageApi.getMovieDetails(movieId = movieId)
+            }.getOrNull()
+        }
+    }
 
 
     // not needed due to pagination
