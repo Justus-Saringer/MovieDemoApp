@@ -19,7 +19,9 @@ class SearchViewModel @Inject constructor(
     private val landingPageRepository: LandingPageRepository
 ) : ViewModel() {
 
-    val movieDetailsState = MovieDetailsState()
+    val movieDetailsState = MovieDetailsState(
+        refresh = { movieId -> getMovieDetails(movieId) }
+    )
 
     fun getMostPopularMovies(): Flow<PagingData<Movie>> = landingPageRepository.getMostPopularMovies().cachedIn(viewModelScope)
 
