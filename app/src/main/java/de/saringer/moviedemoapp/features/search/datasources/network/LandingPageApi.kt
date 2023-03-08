@@ -2,6 +2,7 @@ package de.saringer.moviedemoapp.features.search.datasources.network
 
 import de.saringer.moviedemoapp.BuildConfig
 import de.saringer.moviedemoapp.features.search.datasources.network.model.discover.DiscoverResponse
+import de.saringer.moviedemoapp.features.search.datasources.network.model.moviecredits.MovieCreditsResponse
 import de.saringer.moviedemoapp.features.search.datasources.network.model.moviedetails.MovieDetailsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,6 +17,12 @@ interface LandingPageApi {
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String? = BuildConfig.APIKEY,
     ): MovieDetailsResponse
+
+    @GET("/movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String? = BuildConfig.APIKEY,
+    ): MovieCreditsResponse
 
     @GET("discover/movie?sort_by=popularity.desc")
     suspend fun getMostPopularMovies(
