@@ -6,6 +6,8 @@ import de.saringer.moviedemoapp.features.search.datasources.network.domain.movie
 
 data class MovieDetailsState(
     val movieDetails: MutableState<MovieDetails?> = mutableStateOf(null),
+    val movieCredits: MutableState<MovieCredits?> = mutableStateOf(null),
+    val refresh: (Int) -> Unit,
     val refreshing: MutableState<Boolean> = mutableStateOf(false),
-    val refresh: (Int) -> Unit
+    val isImageLoading: MutableState<Boolean> = mutableStateOf(false),
 )
