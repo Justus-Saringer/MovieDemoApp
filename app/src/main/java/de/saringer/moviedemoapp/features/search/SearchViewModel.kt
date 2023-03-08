@@ -7,7 +7,6 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageRepository
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
-import de.saringer.moviedemoapp.features.search.datasources.network.extension.toMovieDetails
 import de.saringer.moviedemoapp.features.search.ui.MovieDetailsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +27,8 @@ class SearchViewModel @Inject constructor(
     fun getMovieDetails(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             movieDetailsState.movieDetails.value = null
-            movieDetailsState.movieDetails.value = landingPageRepository.getMovieDetails(movieId = movieId)?.toMovieDetails()
+            movieDetailsState.movieDetails.value = landingPageRepository.getMovieDetails(movieId = movieId)
+            movieDetailsState.movieCredits.value = landingPageRepository.getMovieCredits(movieId = movieId)
         }
     }
 }
