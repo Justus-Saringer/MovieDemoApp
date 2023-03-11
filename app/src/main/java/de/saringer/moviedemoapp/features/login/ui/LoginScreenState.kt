@@ -14,15 +14,17 @@ class LoginScreenState constructor(
     val isLoading = mutableStateOf(isLoading)
     val isPasswordVisible = mutableStateOf(isPasswordVisible)
     val snackBarHostState = SnackbarHostState()
+    val isInternetAvailable = mutableStateOf(true)
 
     private val areInputFieldsEmpty: Boolean
         get() = usernameInput.value.isEmpty() || passwordInput.value.isEmpty()
 
     val hasPageError: Boolean
-        get() = areInputFieldsEmpty
+        get() = areInputFieldsEmpty || isInternetAvailable.value
 
     val errorText: String
         get() = when {
+            isInternetAvailable.value -> "No Internet available"
             usernameInput.value.isEmpty() -> "Username is empty"
             passwordInput.value.isEmpty() -> "Password is empty"
             else -> "Password or Username is incorrect"

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -34,9 +35,13 @@ import androidx.compose.ui.unit.dp
 import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
 import de.saringer.moviedemoapp.shared.extensions.noRippleClickable
+import de.saringer.moviedemoapp.shared.state.ConnectionState
+import de.saringer.moviedemoapp.shared.state.connectivityState
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.orange
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -57,7 +62,7 @@ fun LoginScreen(
 
         val onSnackBar: () -> Unit = {
             scope.launch {
-                if (state.hasPageError) {
+                if (state.hasPageError && !state.isInternetAvailable.value) {
                     state.snackBarHostState.showSnackbar(
                         message = state.errorText,
                         duration = SnackbarDuration.Short
@@ -205,7 +210,9 @@ private fun UserInputArea(
 
         // password
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
             value = state.passwordInput.value,
             maxLines = 1,
             label = { Text(text = stringResource(id = R.string.password)) },
@@ -248,7 +255,7 @@ private fun UserInputArea(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 private fun ButtonArea(
     state: LoginScreenState,
@@ -258,6 +265,9 @@ private fun ButtonArea(
     onSnackBar: () -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        val connection by connectivityState()
+        val isConnected = connection === ConnectionState.Available
+
         // user login
         Button(
             modifier = Modifier
@@ -265,6 +275,7 @@ private fun ButtonArea(
                 .height(52.dp),
             enabled = !state.isLoading.value,
             onClick = {
+                state.isInternetAvailable.value = isConnected
                 keyboardController?.hide()
                 onSnackBar()
                 if (state.hasPageError) return@Button

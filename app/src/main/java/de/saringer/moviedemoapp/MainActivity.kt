@@ -18,4 +18,9 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onDestroy() {
+        // TODO: delete Session
+        super.onDestroy()
+    }
 }
