@@ -12,16 +12,14 @@ import retrofit2.http.Query
 //    https://developers.themoviedb.org/3/movies/get-movie-details
 interface LandingPageApi {
 
-    @GET("/movie/{movie_id}")
+    @GET("/3/movie/{movie_id}?api_key=${BuildConfig.APIKEY}")
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String? = BuildConfig.APIKEY,
     ): MovieDetailsResponse
 
-    @GET("/movie/{movie_id}/credits")
+    @GET("/3/movie/{movie_id}/credits?api_key=${BuildConfig.APIKEY}")
     suspend fun getMovieCredits(
         @Path("movie_id") movieId: Int,
-        @Query("api_key") apiKey: String? = BuildConfig.APIKEY,
     ): MovieCreditsResponse
 
     @GET("discover/movie?sort_by=popularity.desc")
