@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -61,35 +62,47 @@ fun MovieDetailsPage(movieId: Int, movieDetailsState: MovieDetailsState) {
             onRefresh = { refresh.invoke(movieId) }
         )
 
-        Box {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.background)
-                    .pullRefresh(refreshState)
-            ) {
-                AsyncImage(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(236.dp),
-                    contentDescription = movieDetails.value?.originalTitle,
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data("https://image.tmdb.org/t/p/original${movieDetails.value?.posterPath}")
-                        .crossfade(true)
-                        .placeholder(R.drawable.ic_launcher_background.toDrawable())
-                        .build(),
-                    contentScale = ContentScale.Crop,
-                    onLoading = { isImageLoading.value = true },
-                    onSuccess = { isImageLoading.value = false },
-                )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
 
-                TitleWithYear(originalTitle = movieDetails.value?.originalTitle, releaseDate = movieDetails.value?.releaseDate)
+            when {
+                movieDetails.value?.originalTitle != null && movieDetails.value?.overview != null -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colors.background)
+                            .pullRefresh(refreshState)
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(236.dp),
+                            contentDescription = movieDetails.value?.originalTitle,
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data("https://image.tmdb.org/t/p/original${movieDetails.value?.posterPath}")
+                                .crossfade(true)
+                                .placeholder(R.drawable.ic_launcher_background.toDrawable())
+                                .build(),
+                            contentScale = ContentScale.Crop,
+                            onLoading = { isImageLoading.value = true },
+                            onSuccess = { isImageLoading.value = false },
+                        )
 
-                RuntimeAndAdult(isForAdults = movieDetails.value?.adult, runtime = movieDetails.value?.runtime)
+                        TitleWithYear(originalTitle = movieDetails.value?.originalTitle, releaseDate = movieDetails.value?.releaseDate)
 
-                movieDetails.value?.genres?.let { genres -> GenreChips(genres = genres) }
+                        RuntimeAndAdult(isForAdults = movieDetails.value?.adult, runtime = movieDetails.value?.runtime)
 
-                Overview(overview = movieDetails.value?.overview)
+                        movieDetails.value?.genres?.let { genres -> GenreChips(genres = genres) }
+
+                        Overview(overview = movieDetails.value?.overview)
+                    }
+                }
+                else -> {
+                    Text(text = "Something went wrong")
+                }
             }
 
             PullRefreshIndicator(

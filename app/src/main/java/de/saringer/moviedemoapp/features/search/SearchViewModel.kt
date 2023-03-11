@@ -19,12 +19,12 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel() {
 
     val movieDetailsState = MovieDetailsState(
-        refresh = { movieId -> getMovieDetails(movieId) }
+        refresh = { movieId -> getMovieDetailsWithCredits(movieId) }
     )
 
     fun getMostPopularMovies(): Flow<PagingData<Movie>> = landingPageRepository.getMostPopularMovies().cachedIn(viewModelScope)
 
-    fun getMovieDetails(movieId: Int) {
+    fun getMovieDetailsWithCredits(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             movieDetailsState.movieDetails.value = null
             movieDetailsState.movieDetails.value = landingPageRepository.getMovieDetails(movieId = movieId)

@@ -75,8 +75,8 @@ class LoginRepository @Inject constructor(
     }
 
     suspend fun getTokenData(): LoginToken? {
-        return kotlin.runCatching {
-             fetchToken()
+        return runCatching {
+            fetchToken()
         }.getOrNull()
     }
 
