@@ -1,11 +1,16 @@
-package de.saringer.moviedemoapp.features.search.ui
+package de.saringer.moviedemoapp.features.search.ui.moviedetails
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +18,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -31,16 +39,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.core.graphics.drawable.toDrawable
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import de.saringer.moviedemoapp.R
+import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviecredits.Cast
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviedetails.Genre
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviedetails.MovieDetails
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviedetails.ProductionCompany
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviedetails.ProductionCountry
+import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.blue
 import de.saringer.moviedemoapp.ui.theme.green
@@ -55,7 +70,7 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MovieDetailsPage(movieId: Int, movieDetailsState: MovieDetailsState) {
+fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieDetailsState) {
     with(movieDetailsState) {
         val refreshState = rememberPullRefreshState(
             refreshing = refreshing.value,
@@ -63,7 +78,10 @@ fun MovieDetailsPage(movieId: Int, movieDetailsState: MovieDetailsState) {
         )
 
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize()
+                .pullRefresh(refreshState)
+                .verticalScroll(rememberScrollState()),
             contentAlignment = Alignment.Center
         ) {
 
@@ -71,10 +89,9 @@ fun MovieDetailsPage(movieId: Int, movieDetailsState: MovieDetailsState) {
                 movieDetails.value?.originalTitle != null && movieDetails.value?.overview != null -> {
                     Column(
                         modifier = Modifier
+                            .align(Alignment.TopCenter)
                             .fillMaxSize()
                             .background(MaterialTheme.colors.background)
-                            .pullRefresh(refreshState)
-                            .verticalScroll(rememberScrollState())
                     ) {
                         AsyncImage(
                             modifier = Modifier
@@ -98,10 +115,16 @@ fun MovieDetailsPage(movieId: Int, movieDetailsState: MovieDetailsState) {
                         movieDetails.value?.genres?.let { genres -> GenreChips(genres = genres) }
 
                         Overview(overview = movieDetails.value?.overview)
+
+                        movieCredits.value?.let {
+                            Spacer(modifier = Modifier.size(8.dp))
+                            CastRow(actors = it.cast, onClick = {/*TODO: add navigation to actor*/ })
+                            Spacer(modifier = Modifier.size(8.dp))
+                        }
                     }
                 }
                 else -> {
-                    Text(text = "Something went wrong")
+                    Text(text = "Something went wrong\n¯\\_(ツ)_/¯", textAlign = TextAlign.Center)
                 }
             }
 
@@ -205,6 +228,7 @@ private fun GenreChips(genres: List<Genre?>) {
 private fun Overview(overview: String?) {
     Text(
         text = "Overview:",
+        style = MaterialTheme.typography.caption,
         color = MaterialTheme.colors.onBackground,
         modifier = Modifier.padding(start = 24.dp)
     )
@@ -222,8 +246,105 @@ private fun Overview(overview: String?) {
     }
 }
 
+@Composable
+private fun ColumnScope.CastRow(actors: List<Cast?>, onClick: ((Int) -> Unit)) {
+    Text(
+        text = "Cast:",
+        color = MaterialTheme.colors.onBackground,
+        style = MaterialTheme.typography.caption,
+        modifier = Modifier.padding(start = 24.dp)
+    )
+    Spacer(modifier = Modifier.size(4.dp))
+
+    LazyRow(modifier = Modifier.fillMaxWidth()) {
+        item { Spacer(modifier = Modifier.size(8.dp)) }
+        actors.forEach { actor ->
+            this.item {
+                if (actor != null) {
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { actor.id?.let { onClick.invoke(it) } }
+                    ) {
+                        val isImageLoading = remember { mutableStateOf(false) }
+
+                        Card() {
+                            ConstraintLayout(
+                                modifier = Modifier
+                                    .height(168.dp)
+                                    .width(112.dp)
+                            ) {
+                                val (image, loadingSpinner) = createRefs()
+
+                                AsyncImage(
+                                    modifier = Modifier.constrainAs(image) {
+                                        start.linkTo(parent.start)
+                                        top.linkTo(parent.top)
+                                        end.linkTo(parent.end)
+                                        bottom.linkTo(parent.bottom)
+                                        height = Dimension.fillToConstraints
+                                        width = Dimension.fillToConstraints
+                                    },
+                                    contentDescription = null,
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data("https://image.tmdb.org/t/p/original${actor.profilePath}")
+                                        .crossfade(true)
+                                        .placeholder(R.drawable.ic_launcher_background.toDrawable())
+                                        .build(),
+                                    contentScale = ContentScale.Crop,
+                                    onLoading = { isImageLoading.value = true },
+                                    onSuccess = { isImageLoading.value = false },
+                                )
+
+                                this@Column.AnimatedVisibility(
+                                    modifier = Modifier.constrainAs(loadingSpinner) {
+                                        start.linkTo(parent.start)
+                                        top.linkTo(parent.top)
+                                        end.linkTo(parent.end)
+                                        bottom.linkTo(parent.bottom)
+                                    },
+                                    visible = isImageLoading.value,
+                                    enter = fadeIn(),
+                                    exit = fadeOut()
+                                ) {
+                                    LinearLoadingIndicator()
+                                }
+                            }
+                        }
+
+                        // character name
+                        Text(
+                            modifier = Modifier.width(112.dp),
+                            text = actor.character.orEmpty(),
+                            color = MaterialTheme.colors.onBackground,
+                            style = MaterialTheme.typography.body2,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        // actor's name
+                        Text(
+                            modifier = Modifier.width(112.dp),
+                            text = actor.name.orEmpty(),
+                            color = MaterialTheme.colors.onBackground,
+                            style = MaterialTheme.typography.overline,
+                            maxLines = 1
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(8.dp))
+                }
+            }
+        }
+        item { Spacer(modifier = Modifier.size(8.dp)) }
+    }
+
+
+}
+
 // region previews
-@Preview
+@Preview(showBackground = true, showSystemUi = true, device = Devices.PIXEL_4)
 @Composable
 fun MoviePagePreview() {
     MovieDemoAppTheme {
@@ -268,7 +389,15 @@ fun MoviePagePreview() {
             },
             refresh = {}
         )
-        MovieDetailsPage(movieId = 631842, movieDetailsState = state)
+        MovieDetailsPage(movieId = 631842, movieDetailsState = state, modifier = Modifier)
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true, device = Devices.PIXEL_4)
+@Composable
+private fun FailurePreview() {
+    MovieDemoAppTheme {
+        MovieDetailsPage(modifier = Modifier, movieId = -1, movieDetailsState = MovieDetailsState(refresh = {}))
     }
 }
 // endregion

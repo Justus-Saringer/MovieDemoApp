@@ -16,7 +16,12 @@ val Typography = Typography(
     h6 = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
+        fontSize = 22.sp
+    ),
+    caption = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp
     ),
     body2 = TextStyle(
         fontFamily = FontFamily.Default,

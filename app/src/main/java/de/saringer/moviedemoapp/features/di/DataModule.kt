@@ -42,6 +42,8 @@ object DataModule {
             .build()
     }
 
+    private val json = Json(builderAction = { ignoreUnknownKeys = true })
+
     @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
@@ -49,7 +51,7 @@ object DataModule {
         return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .client(okHttpClient)
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
 }

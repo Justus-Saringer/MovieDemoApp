@@ -62,7 +62,7 @@ fun LoginScreen(
 
         val onSnackBar: () -> Unit = {
             scope.launch {
-                if (state.hasPageError && !state.isInternetAvailable.value) {
+                if (state.hasPageError || !state.isInternetAvailable.value) {
                     state.snackBarHostState.showSnackbar(
                         message = state.errorText,
                         duration = SnackbarDuration.Short
@@ -266,7 +266,7 @@ private fun ButtonArea(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val connection by connectivityState()
-        val isConnected = connection === ConnectionState.Available
+        val isConnected = connection == ConnectionState.Available
 
         // user login
         Button(
@@ -297,7 +297,10 @@ private fun ButtonArea(
             elevation = null,
             enabled = !state.isLoading.value,
             onClick = {
+                state.isInternetAvailable.value = isConnected
+                onSnackBar()
                 keyboardController?.hide()
+                if (!isConnected) return@Button
                 state.isLoading.value = true
                 onSignInAsGuestClick()
             },

@@ -7,8 +7,6 @@ import de.saringer.moviedemoapp.features.search.datasources.network.domain.movie
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toMovieCredits
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toMovieDetails
 import de.saringer.moviedemoapp.features.search.datasources.pagingsources.MostPopularMoviesPagingSource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LandingPageRepository @Inject constructor(
@@ -21,11 +19,9 @@ class LandingPageRepository @Inject constructor(
     ).flow
 
     suspend fun getMovieDetails(movieId: Int): MovieDetails? {
-        return withContext(Dispatchers.IO) {
-            runCatching {
-                landingPageApi.getMovieDetails(movieId = movieId).toMovieDetails()
-            }.getOrNull()
-        }
+        return runCatching {
+            landingPageApi.getMovieDetails(movieId = movieId).toMovieDetails()
+        }.getOrNull()
     }
 
     suspend fun getMovieCredits(movieId: Int): MovieCredits? {

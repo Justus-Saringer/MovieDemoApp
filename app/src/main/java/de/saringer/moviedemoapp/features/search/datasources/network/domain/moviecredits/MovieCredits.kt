@@ -3,5 +3,5 @@ package de.saringer.moviedemoapp.features.search.datasources.network.domain.movi
 data class MovieCredits(
     val cast: List<Cast?> = emptyList(),
     val crew: List<Crew?> = emptyList(),
-    val id: Int? = null
+    val id: Int? = null,
 )

@@ -24,7 +24,7 @@ class LoginScreenState constructor(
 
     val errorText: String
         get() = when {
-            isInternetAvailable.value -> "No Internet available"
+            !isInternetAvailable.value -> "No Internet available"
             usernameInput.value.isEmpty() -> "Username is empty"
             passwordInput.value.isEmpty() -> "Password is empty"
             else -> "Password or Username is incorrect"

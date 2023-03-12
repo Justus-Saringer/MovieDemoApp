@@ -1,13 +1,16 @@
 package de.saringer.moviedemoapp.features.search.ui
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import de.saringer.moviedemoapp.features.search.SearchViewModel
+import de.saringer.moviedemoapp.features.search.ui.moviedetails.MovieDetailsPage
 
 @Composable
 fun SearchScreen(paddingValues: PaddingValues, state: SearchScreenState) {
@@ -45,7 +48,7 @@ fun SearchScreen(paddingValues: PaddingValues, state: SearchScreenState) {
             if (movieId == -1) searchScreenNavController.navigate("searchAndLanding")
 
             viewModel.getMovieDetailsWithCredits(movieId)
-            MovieDetailsPage(movieId = movieId, movieDetailsState = viewModel.movieDetailsState)
+            MovieDetailsPage(modifier = Modifier.padding(paddingValues), movieId = movieId, movieDetailsState = viewModel.movieDetailsState)
         }
     }
 }

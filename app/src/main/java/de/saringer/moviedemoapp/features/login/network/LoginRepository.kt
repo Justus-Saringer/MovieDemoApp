@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdGuest
 import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdUser
 import de.saringer.moviedemoapp.features.login.network.domain.LoginToken
 import de.saringer.moviedemoapp.features.login.network.extension.toLoginSessionIdGuest
@@ -24,7 +25,13 @@ class LoginRepository @Inject constructor(
 ) {
     private val dataStore = application.applicationContext.dataStore
 
-    suspend fun getSessionIdForGuests() = api.getSessionIdForGuests().toLoginSessionIdGuest()
+    suspend fun getSessionIdForGuests(): LoginSessionIdGuest? {
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                api.getSessionIdForGuests().toLoginSessionIdGuest()
+            }.getOrNull()
+        }
+    }
 
     suspend fun getSessionIdWithUserData(
         username: String,
