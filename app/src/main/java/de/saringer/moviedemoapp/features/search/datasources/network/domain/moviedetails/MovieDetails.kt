@@ -4,7 +4,7 @@ package de.saringer.moviedemoapp.features.search.datasources.network.domain.movi
 data class MovieDetails(
     val adult: Boolean,
     val backdropPath: String? = null,
-    val belongsToCollection: Boolean? = null,
+    val belongsToCollection: CollectionDetails? = null,
     val budget: Int? = null,
     val genres: List<Genre?> = emptyList(),
     val homepage: String? = null,
