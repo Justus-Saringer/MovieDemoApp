@@ -43,7 +43,6 @@ fun SearchScreen(paddingValues: PaddingValues, state: SearchScreenState) {
                     builder = { nullable = true })
             )
         ) { backStackEntry ->
-            // val movieId = backStackEntry.arguments?.getInt("movieId") ?: throw IllegalArgumentException("Invalid navigation argument on route \"movie/{movieId}\"")
             val movieId = backStackEntry.arguments?.getString("movieId")?.toInt() ?: -1
             if (movieId == -1) searchScreenNavController.navigate("searchAndLanding")
 
