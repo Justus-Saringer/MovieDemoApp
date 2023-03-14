@@ -99,11 +99,11 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                                 .height(236.dp),
                             contentDescription = movieDetails.value?.originalTitle,
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data("https://image.tmdb.org/t/p/original${movieDetails.value?.posterPath}")
+                                .data("https://image.tmdb.org/t/p/original${movieDetails.value?.backdropPath}")
                                 .crossfade(true)
                                 .placeholder(R.drawable.ic_launcher_background.toDrawable())
                                 .build(),
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Inside,
                             onLoading = { isImageLoading.value = true },
                             onSuccess = { isImageLoading.value = false },
                         )
