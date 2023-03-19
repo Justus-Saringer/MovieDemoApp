@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -49,6 +50,8 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.core.graphics.drawable.toDrawable
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import com.google.accompanist.flowlayout.FlowRow
 import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviecredits.Cast
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviedetails.Genre
@@ -63,6 +66,8 @@ import de.saringer.moviedemoapp.ui.theme.grey
 import de.saringer.moviedemoapp.ui.theme.lightBlue
 import de.saringer.moviedemoapp.ui.theme.orange
 import de.saringer.moviedemoapp.ui.theme.yellow
+import java.text.NumberFormat
+import java.util.*
 import kotlin.random.Random
 
 // pull to refresh
@@ -121,10 +126,13 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                             CastRow(actors = it.cast, onClick = {/*TODO: add navigation to actor*/ })
                             Spacer(modifier = Modifier.size(8.dp))
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Facts(movieDetailsState)
                     }
                 }
                 else -> {
-                    Text(text = "Something went wrong\n¯\\_(ツ)_/¯", textAlign = TextAlign.Center)
+                    Text(text = "Something went wrong\n¯\\_(ツ)_/¯", textAlign = TextAlign.Center, color = lightBlue)
                 }
             }
 
@@ -339,8 +347,67 @@ private fun ColumnScope.CastRow(actors: List<Cast?>, onClick: ((Int) -> Unit)) {
         }
         item { Spacer(modifier = Modifier.size(8.dp)) }
     }
+}
 
 
+@Composable
+private fun Facts(movieDetailsState: MovieDetailsState) {
+    Text(
+        text = "Facts:",
+        style = MaterialTheme.typography.caption,
+        color = MaterialTheme.colors.onBackground,
+        modifier = Modifier.padding(start = 24.dp)
+    )
+    Column(
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp, top = 4.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(grey)
+            .padding(vertical = 4.dp, horizontal = 8.dp)
+    ) {
+
+        // budget
+        val budget = movieDetailsState.movieDetails.value?.budget
+        if (budget != null) {
+            val formattedBudget = NumberFormat.getCurrencyInstance(Locale.US).format(budget)
+
+            Text(text = "Film budget: $formattedBudget", color = MaterialTheme.colors.onBackground)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // production companies
+        Text(text = "Companies", color = MaterialTheme.colors.onBackground)
+        Spacer(modifier = Modifier.height(8.dp))
+
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(horizontal = 16.dp),
+            mainAxisAlignment = FlowMainAxisAlignment.Center,
+            crossAxisSpacing = 8.dp,
+            mainAxisSpacing = 16.dp
+        ) {
+            movieDetailsState.movieDetails.value?.productionCompanies?.forEach { productionCompany ->
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    AsyncImage(
+                        modifier = Modifier.size(64.dp),
+                        model = "https://image.tmdb.org/t/p/original${productionCompany?.logoPath}",
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        modifier = Modifier.width(80.dp),
+                        text = productionCompany?.name.orEmpty(),
+                        color = MaterialTheme.colors.onBackground,
+                        style = MaterialTheme.typography.body2,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
 }
 
 // region previews
@@ -366,6 +433,18 @@ fun MoviePagePreview() {
                         popularity = 3975.228,
                         posterPath = "/dm06L9pxDOL9jNSK4Cb6y139rrG.jpg",
                         productionCompanies = listOf(
+                            ProductionCompany(
+                                12236,
+                                "/uV6QBPdn3MjQzAFdgEel6od7geg.png",
+                                "Universal Pictures",
+                                "US"
+                            ),
+                            ProductionCompany(
+                                12236,
+                                "/uV6QBPdn3MjQzAFdgEel6od7geg.png",
+                                "Universal Pictures",
+                                "US"
+                            ),
                             ProductionCompany(
                                 12236,
                                 "/uV6QBPdn3MjQzAFdgEel6od7geg.png",
