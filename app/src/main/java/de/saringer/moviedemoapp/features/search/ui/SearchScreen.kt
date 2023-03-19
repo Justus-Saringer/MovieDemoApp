@@ -43,7 +43,8 @@ fun SearchScreen(paddingValues: PaddingValues, state: SearchScreenState, isBotto
             arguments = listOf(
                 navArgument(
                     name = "movieId",
-                    builder = { nullable = true })
+                    builder = { nullable = true }
+                )
             )
         ) { backStackEntry ->
             val movieId = backStackEntry.arguments?.getString("movieId")?.toInt() ?: -1

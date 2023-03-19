@@ -1,6 +1,8 @@
 package de.saringer.moviedemoapp.features
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
@@ -23,7 +25,7 @@ fun MainScreen() {
             .fillMaxSize()
             .background(MaterialTheme.colors.background),
         bottomBar = {
-            AnimatedVisibility(visible = isBottomBarVisible.value) {
+            AnimatedVisibility(visible = isBottomBarVisible.value, enter = expandVertically(), exit = shrinkVertically()) {
                 BottomBarNavigation(navController = navController)
             }
         },
