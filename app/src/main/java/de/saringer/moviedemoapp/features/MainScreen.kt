@@ -1,28 +1,37 @@
 package de.saringer.moviedemoapp.features
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import de.saringer.moviedemoapp.graphsandnavigation.MainNavGraph
 
 @Composable
 fun MainScreen() {
-    val navController = rememberNavController()
 
-    // TODO: add BottomBarState for visibility
+    val navController = rememberNavController()
+    val isBottomBarVisible = remember { mutableStateOf(true) }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.background),
-        bottomBar = { BottomBarNavigation(navController = navController) },
+        bottomBar = {
+            AnimatedVisibility(visible = isBottomBarVisible.value) {
+                BottomBarNavigation(navController = navController)
+            }
+        },
     ) {
         MainNavGraph(
             navController = navController,
-            paddingValues = it
+            paddingValues = it,
+            isBottomBarVisible = isBottomBarVisible
         )
     }
 }

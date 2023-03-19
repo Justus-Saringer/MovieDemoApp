@@ -389,7 +389,7 @@ fun MoviePagePreview() {
             },
             refresh = {}
         )
-        MovieDetailsPage(movieId = 631842, movieDetailsState = state, modifier = Modifier)
+        MovieDetailsPage(modifier = Modifier, movieId = 631842, movieDetailsState = state)
     }
 }
 
@@ -397,7 +397,11 @@ fun MoviePagePreview() {
 @Composable
 private fun FailurePreview() {
     MovieDemoAppTheme {
-        MovieDetailsPage(modifier = Modifier, movieId = -1, movieDetailsState = MovieDetailsState(refresh = {}))
+        MovieDetailsPage(
+            modifier = Modifier,
+            movieId = -1,
+            movieDetailsState = MovieDetailsState(refresh = {}),
+        )
     }
 }
 // endregion
