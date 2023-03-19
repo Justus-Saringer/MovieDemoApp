@@ -55,7 +55,7 @@ fun SearchScreen(paddingValues: PaddingValues, state: SearchScreenState, isBotto
             BackHandler() {
                 isBottomBarVisible.value = true
                 searchScreenNavController.navigate("searchAndLanding")
-
+                viewModel.clearMovieDetails()
             }
         }
     }

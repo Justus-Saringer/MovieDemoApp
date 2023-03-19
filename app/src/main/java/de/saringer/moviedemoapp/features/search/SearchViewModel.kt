@@ -31,4 +31,9 @@ class SearchViewModel @Inject constructor(
             movieDetailsState.movieCredits.value = landingPageRepository.getMovieCredits(movieId = movieId)
         }
     }
+
+    fun clearMovieDetails() {
+        movieDetailsState.movieDetails.value = null
+        movieDetailsState.movieCredits.value = null
+    }
 }
