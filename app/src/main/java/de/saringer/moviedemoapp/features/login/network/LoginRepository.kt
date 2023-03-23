@@ -23,6 +23,8 @@ class LoginRepository @Inject constructor(
     private val api: LoginApi,
     application: Application
 ) {
+    // TODO: add username, token etc. here, so it is available in the whole project
+
     private val dataStore = application.applicationContext.dataStore
 
     suspend fun getSessionIdForGuests(): LoginSessionIdGuest? {

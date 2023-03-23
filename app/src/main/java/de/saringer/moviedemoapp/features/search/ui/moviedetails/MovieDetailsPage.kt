@@ -11,6 +11,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -128,7 +132,7 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                         }
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        Facts(movieDetailsState)
+                        Facts(movieDetailsState = movieDetailsState)
                     }
                 }
                 else -> {
@@ -358,6 +362,7 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
         color = MaterialTheme.colors.onBackground,
         modifier = Modifier.padding(start = 24.dp)
     )
+
     Column(
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp, bottom = 8.dp, top = 4.dp)
@@ -372,6 +377,15 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
             val formattedBudget = NumberFormat.getCurrencyInstance(Locale.US).format(budget)
 
             Text(text = "Film budget: $formattedBudget", color = MaterialTheme.colors.onBackground)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // revenue
+        val revenue = movieDetailsState.movieDetails.value?.revenue
+        if (revenue != null) {
+            val formattedBudget = NumberFormat.getCurrencyInstance(Locale.US).format(revenue)
+
+            Text(text = "Film revenue: $formattedBudget", color = MaterialTheme.colors.onBackground)
             Spacer(modifier = Modifier.height(16.dp))
         }
 
@@ -407,7 +421,23 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
                 }
             }
         }
+
+        // production countries
+        val countries = movieDetailsState.movieDetails.value?.productionCountries ?: emptyList()
+        if (countries.isNotEmpty()) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(countries) { country ->
+                    country?.name?.let {
+                        Text(text = it, color = MaterialTheme.colors.onBackground)
+                    }
+                }
+            }
+        }
     }
+
 }
 
 // region previews
