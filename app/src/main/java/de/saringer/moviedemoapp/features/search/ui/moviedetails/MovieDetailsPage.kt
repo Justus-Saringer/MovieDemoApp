@@ -68,6 +68,7 @@ import de.saringer.moviedemoapp.ui.theme.blue
 import de.saringer.moviedemoapp.ui.theme.green
 import de.saringer.moviedemoapp.ui.theme.grey
 import de.saringer.moviedemoapp.ui.theme.lightBlue
+import de.saringer.moviedemoapp.ui.theme.lightGrey
 import de.saringer.moviedemoapp.ui.theme.orange
 import de.saringer.moviedemoapp.ui.theme.yellow
 import java.text.NumberFormat
@@ -133,6 +134,7 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Facts(movieDetailsState = movieDetailsState)
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
                 else -> {
@@ -353,7 +355,6 @@ private fun ColumnScope.CastRow(actors: List<Cast?>, onClick: ((Int) -> Unit)) {
     }
 }
 
-
 @Composable
 private fun Facts(movieDetailsState: MovieDetailsState) {
     Text(
@@ -376,7 +377,7 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
         if (budget != null) {
             val formattedBudget = NumberFormat.getCurrencyInstance(Locale.US).format(budget)
 
-            Text(text = "Film budget: $formattedBudget", color = MaterialTheme.colors.onBackground)
+            Text(text = "Film budget:\n$formattedBudget", color = MaterialTheme.colors.onBackground)
             Spacer(modifier = Modifier.height(16.dp))
         }
 
@@ -385,19 +386,21 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
         if (revenue != null) {
             val formattedBudget = NumberFormat.getCurrencyInstance(Locale.US).format(revenue)
 
-            Text(text = "Film revenue: $formattedBudget", color = MaterialTheme.colors.onBackground)
+            Text(text = "Film revenue:\n$formattedBudget", color = MaterialTheme.colors.onBackground)
             Spacer(modifier = Modifier.height(16.dp))
         }
 
         // production companies
-        Text(text = "Companies", color = MaterialTheme.colors.onBackground)
+        Text(text = "Companies:", color = MaterialTheme.colors.onBackground)
         Spacer(modifier = Modifier.height(8.dp))
 
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(lightGrey),
             mainAxisAlignment = FlowMainAxisAlignment.Center,
             crossAxisSpacing = 8.dp,
             mainAxisSpacing = 16.dp
@@ -421,18 +424,20 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
                 }
             }
         }
+        movieDetailsState.movieDetails.value?.productionCompanies?.let {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
         // production countries
+        Text(text = "Production countries:", color = MaterialTheme.colors.onBackground)
+        Spacer(modifier = Modifier.height(8.dp))
+
         val countries = movieDetailsState.movieDetails.value?.productionCountries ?: emptyList()
+
         if (countries.isNotEmpty()) {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                items(countries) { country ->
-                    country?.name?.let {
-                        Text(text = it, color = MaterialTheme.colors.onBackground)
-                    }
+            countries.forEach { country ->
+                country?.name?.let {
+                    Text(text = it, color = MaterialTheme.colors.onBackground)
                 }
             }
         }
