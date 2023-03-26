@@ -41,6 +41,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -118,9 +119,15 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                             onSuccess = { isImageLoading.value = false },
                         )
 
-                        TitleWithYear(originalTitle = movieDetails.value?.originalTitle, releaseDate = movieDetails.value?.releaseDate)
+                        TitleWithYear(
+                            originalTitle = movieDetails.value?.originalTitle,
+                            releaseDate = movieDetails.value?.releaseDate
+                        )
 
-                        RuntimeAndAdult(isForAdults = movieDetails.value?.adult, runtime = movieDetails.value?.runtime)
+                        RuntimeAndAdult(
+                            isForAdults = movieDetails.value?.adult,
+                            runtime = movieDetails.value?.runtime
+                        )
 
                         movieDetails.value?.genres?.let { genres -> GenreChips(genres = genres) }
 
@@ -128,7 +135,9 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
 
                         movieCredits.value?.let {
                             Spacer(modifier = Modifier.size(8.dp))
-                            CastRow(actors = it.cast, onClick = {/*TODO: add navigation to actor*/ })
+                            CastRow(
+                                actors = it.cast,
+                                onClick = {/*TODO: add navigation to actor*/ })
                             Spacer(modifier = Modifier.size(8.dp))
                         }
                         Spacer(modifier = Modifier.height(16.dp))
@@ -138,7 +147,11 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                     }
                 }
                 else -> {
-                    Text(text = "Something went wrong\n¯\\_(ツ)_/¯", textAlign = TextAlign.Center, color = lightBlue)
+                    Text(
+                        text = "Something went wrong\n¯\\_(ツ)_/¯",
+                        textAlign = TextAlign.Center,
+                        color = lightBlue
+                    )
                 }
             }
 
@@ -386,7 +399,10 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
         if (revenue != null) {
             val formattedBudget = NumberFormat.getCurrencyInstance(Locale.US).format(revenue)
 
-            Text(text = "Film revenue:\n$formattedBudget", color = MaterialTheme.colors.onBackground)
+            Text(
+                text = "Film revenue:\n$formattedBudget",
+                color = MaterialTheme.colors.onBackground
+            )
             Spacer(modifier = Modifier.height(16.dp))
         }
 
@@ -398,15 +414,21 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(lightGrey),
+                .padding(horizontal = 16.dp),
             mainAxisAlignment = FlowMainAxisAlignment.Center,
             crossAxisSpacing = 8.dp,
             mainAxisSpacing = 16.dp
         ) {
             movieDetailsState.movieDetails.value?.productionCompanies?.forEach { productionCompany ->
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(
+                    modifier = Modifier
+                        .alpha(0.5f)
+                        .background(
+                            color = lightGrey,
+                            shape = RoundedCornerShape(8.dp)
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     AsyncImage(
                         modifier = Modifier.size(64.dp),
                         model = "https://image.tmdb.org/t/p/original${productionCompany?.logoPath}",
@@ -458,7 +480,11 @@ fun MoviePagePreview() {
                         backdropPath = "/zWDMQX0sPaW2u0N2pJaYA8bVVaJ.jpg",
                         belongsToCollection = null,
                         budget = 20000000,
-                        genres = listOf(Genre(27, "Horror"), Genre(9648, "Mystery"), Genre(53, "Thriller")),
+                        genres = listOf(
+                            Genre(27, "Horror"),
+                            Genre(9648, "Mystery"),
+                            Genre(53, "Thriller")
+                        ),
                         homepage = "https://www.knockatthecabin.com",
                         id = 61842,
                         imdbId = "tt15679400",
@@ -487,7 +513,12 @@ fun MoviePagePreview() {
                                 "US"
                             )
                         ),
-                        productionCountries = listOf(ProductionCountry("US", "United States of America")),
+                        productionCountries = listOf(
+                            ProductionCountry(
+                                "US",
+                                "United States of America"
+                            )
+                        ),
                         releaseDate = "2023-02-01",
                         revenue = 52000000,
                         runtime = 100,
