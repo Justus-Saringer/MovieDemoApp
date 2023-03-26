@@ -23,7 +23,12 @@ class LoginRepository @Inject constructor(
     private val api: LoginApi,
     application: Application
 ) {
-    // TODO: add username, token etc. here, so it is available in the whole project
+
+    var tokenData: LoginToken? = null
+
+    var sessionIdGuest: LoginSessionIdGuest? = null
+
+    var sessionIdUser: LoginSessionIdUser? = null
 
     private val dataStore = application.applicationContext.dataStore
 
@@ -49,8 +54,14 @@ class LoginRepository @Inject constructor(
         }
     }
 
-    suspend fun deleteSession(currentSession: String) = withContext(Dispatchers.IO) {
-        runCatching { api.deleteSession(currentSession) }
+    suspend fun deleteSession() = withContext(Dispatchers.IO) {
+        sessionIdGuest?.guestSessionId?.let { session ->
+            runCatching { api.deleteSession(session) }
+        }
+
+        sessionIdUser?.sessionIdUser?.let { session ->
+            runCatching { api.deleteSession(session) }
+        }
     }
 
     fun saveLoginData(username: String, password: String) {

@@ -19,18 +19,20 @@ class LoginViewModel @Inject constructor(
 
     val loginState = LoginScreenState(usernameInput = "", passwordInput = "", isLoading = false, isPasswordVisible = false)
 
-    var tokenData: LoginToken? = null
-    var sessionIdGuest: LoginSessionIdGuest? = null
-    var sessionIdUser: LoginSessionIdUser? = null
+    val getSessionIdUser
+        get() = loginRepository.sessionIdUser
+
+    val getSessionIdGuest
+        get () = loginRepository.sessionIdGuest
 
     init {
         viewModelScope.launch {
-            tokenData = loginRepository.getTokenData()
-            if (hasStoredLoginData() && tokenData?.success == true) {
-                sessionIdUser = loginRepository.getSessionIdWithUserData(
+            loginRepository.tokenData = loginRepository.getTokenData()
+            if (hasStoredLoginData() && loginRepository.tokenData?.success == true) {
+                loginRepository.sessionIdUser = loginRepository.getSessionIdWithUserData(
                     username = loginRepository.getStoredUsername().orEmpty(),
                     password = loginRepository.getStoredPassword().orEmpty(),
-                    requestToken = tokenData?.requestToken!!
+                    requestToken = loginRepository.tokenData?.requestToken!!
                 )
             }
         }
@@ -44,8 +46,8 @@ class LoginViewModel @Inject constructor(
 
     fun loginAsGuest(invokeAfter: () -> Unit) {
         viewModelScope.launch(Dispatchers.Main) {
-            if (tokenData == null || tokenData?.success == false) loginRepository.getTokenData()
-            sessionIdGuest = loginRepository.getSessionIdForGuests()
+            if (loginRepository.tokenData == null || loginRepository.tokenData?.success == false) loginRepository.getTokenData()
+            loginRepository.sessionIdGuest = loginRepository.getSessionIdForGuests()
 
             loginState.isLoading.value = false
             invokeAfter()
@@ -54,9 +56,9 @@ class LoginViewModel @Inject constructor(
 
     fun loginAsUser(invokeAfter: () -> Unit) {
         viewModelScope.launch(Dispatchers.Main) {
-            if (tokenData == null || tokenData?.success == false) loginRepository.getTokenData()
+            if (loginRepository.tokenData == null || loginRepository.tokenData?.success == false) loginRepository.getTokenData()
 
-            sessionIdUser = tokenData?.requestToken?.let { requestToken ->
+            loginRepository.sessionIdUser = loginRepository.tokenData?.requestToken?.let { requestToken ->
                 loginRepository.getSessionIdWithUserData(
                     username = loginState.usernameInput.value,
                     password = loginState.passwordInput.value,

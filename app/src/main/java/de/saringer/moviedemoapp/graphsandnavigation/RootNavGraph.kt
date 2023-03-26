@@ -26,12 +26,12 @@ fun RootNavGraph(navController: NavHostController) {
                 state = loginViewModel.loginState,
                 onSignInAsUserClick = {
                     loginViewModel.loginAsUser() {
-                        if (loginViewModel.sessionIdUser?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
+                        if (loginViewModel.getSessionIdUser?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
                     }
                 },
                 onSignInAsGuestClick = {
                     loginViewModel.loginAsGuest() {
-                        if (loginViewModel.sessionIdGuest?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
+                        if (loginViewModel.getSessionIdGuest?.success == true) navController.navigate(RootGraph.BOTTOMBAR)
                     }
                 },
             )
@@ -43,8 +43,8 @@ fun RootNavGraph(navController: NavHostController) {
 
         composable(route = RootGraph.LOADING) {
             LoadingScreen()
-            LaunchedEffect(key1 = loginViewModel.sessionIdUser?.success) {
-                when (loginViewModel.sessionIdUser?.success) {
+            LaunchedEffect(key1 = loginViewModel.getSessionIdUser?.success) {
+                when (loginViewModel.getSessionIdUser?.success) {
                     true -> {
                         navController.popBackStack()
                         navController.navigate(RootGraph.BOTTOMBAR)
