@@ -10,6 +10,7 @@ import de.saringer.moviedemoapp.features.search.datasources.network.domain.disco
 import de.saringer.moviedemoapp.features.search.ui.moviedetails.MovieDetailsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,9 +27,11 @@ class SearchViewModel @Inject constructor(
 
     fun getMovieDetailsWithCredits(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
+            movieDetailsState.isPageLoading.value = true
             movieDetailsState.movieDetails.value = null
             movieDetailsState.movieDetails.value = landingPageRepository.getMovieDetails(movieId = movieId)
             movieDetailsState.movieCredits.value = landingPageRepository.getMovieCredits(movieId = movieId)
+            movieDetailsState.isPageLoading.value = false
         }
     }
 

@@ -11,4 +11,5 @@ data class MovieDetailsState(
     val refresh: (Int) -> Unit,
     val refreshing: MutableState<Boolean> = mutableStateOf(false),
     val isImageLoading: MutableState<Boolean> = mutableStateOf(false),
+    val isPageLoading: MutableState<Boolean> = mutableStateOf(true)
 )

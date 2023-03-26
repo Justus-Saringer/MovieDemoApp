@@ -97,6 +97,10 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
         ) {
 
             when {
+                movieDetailsState.isPageLoading.value -> {
+                    LinearLoadingIndicator()
+                }
+
                 movieDetails.value?.originalTitle != null && movieDetails.value?.overview != null -> {
                     Column(
                         modifier = Modifier
@@ -146,6 +150,7 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
+
                 else -> {
                     Text(
                         text = "Something went wrong\n¯\\_(ツ)_/¯",
