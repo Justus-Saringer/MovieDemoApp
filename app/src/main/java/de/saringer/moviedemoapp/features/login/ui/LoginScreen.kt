@@ -298,6 +298,7 @@ private fun ButtonArea(
             enabled = !state.isLoading.value,
             onClick = {
                 state.isInternetAvailable.value = isConnected
+                // todo separate internet connection snackbar or some other solution
                 onSnackBar()
                 keyboardController?.hide()
                 if (!isConnected) return@Button
