@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.ui
+package de.saringer.moviedemoapp.features.search
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import de.saringer.moviedemoapp.features.search.SearchViewModel
+import de.saringer.moviedemoapp.features.search.ui.SearchAndLandingPage
 import de.saringer.moviedemoapp.features.search.ui.moviedetails.MovieDetailsPage
 
 @Composable

@@ -1,7 +1,10 @@
-package de.saringer.moviedemoapp.features.search.ui
+package de.saringer.moviedemoapp.features.search
 
 import androidx.compose.runtime.mutableStateOf
+import de.saringer.moviedemoapp.features.search.ui.searchbar.ChipState
+import de.saringer.moviedemoapp.features.search.ui.searchbar.SearchBarState
 
+// TODO: move this to the SearchBarState and decide if this is necessary
 data class SearchScreenState(
     val searchBarState: SearchBarState = SearchBarState(
         chips = listOf(
