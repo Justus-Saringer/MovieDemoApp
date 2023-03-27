@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.di
+package de.saringer.moviedemoapp.di
 
 import android.app.Application
 import android.content.Context
