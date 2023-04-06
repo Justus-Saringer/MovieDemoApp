@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.ui
+package de.saringer.moviedemoapp.features.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,8 +13,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import de.saringer.moviedemoapp.features.search.SearchScreenState
-import de.saringer.moviedemoapp.features.search.SearchViewModel
 import de.saringer.moviedemoapp.features.search.landingpage.LandingPage
 import de.saringer.moviedemoapp.features.search.searchbar.SearchBar
 import de.saringer.moviedemoapp.shared.extensions.noRippleClickable
