@@ -13,9 +13,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity @Inject constructor(
-    private val loginRepository: LoginRepository
-) : ComponentActivity() {
+class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var loginRepository: LoginRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
