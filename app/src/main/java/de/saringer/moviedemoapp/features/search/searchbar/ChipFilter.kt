@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.ui.searchbar
+package de.saringer.moviedemoapp.features.search.searchbar
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row

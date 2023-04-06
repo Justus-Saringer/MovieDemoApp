@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.graphsandnavigation
+package de.saringer.moviedemoapp.graphsandnavigations
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -6,7 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import de.saringer.moviedemoapp.features.search.SearchScreen
+import de.saringer.moviedemoapp.features.search.SearchNavigation
 import de.saringer.moviedemoapp.features.search.SearchScreenState
 import de.saringer.moviedemoapp.features.settings.SettingsScreen
 import de.saringer.moviedemoapp.features.yours.YoursScreen
@@ -21,7 +21,7 @@ fun MainNavGraph(navController: NavHostController, paddingValues: PaddingValues,
         }
 
         composable(BottomNavItem.Search.route) {
-            SearchScreen(paddingValues = paddingValues, state = SearchScreenState(), isBottomBarVisible = isBottomBarVisible)
+            SearchNavigation(paddingValues = paddingValues, state = SearchScreenState(), isBottomBarVisible = isBottomBarVisible)
             // TODO: put SearchScreenState into a viewModel
         }
 

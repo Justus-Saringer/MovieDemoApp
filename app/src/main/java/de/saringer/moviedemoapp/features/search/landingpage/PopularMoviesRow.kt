@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.ui.landingpage
+package de.saringer.moviedemoapp.features.search.landingpage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,7 +1,11 @@
 package de.saringer.moviedemoapp.features.search.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import de.saringer.moviedemoapp.features.search.SearchScreenState
 import de.saringer.moviedemoapp.features.search.SearchViewModel
-import de.saringer.moviedemoapp.features.search.ui.landingpage.LandingPage
-import de.saringer.moviedemoapp.features.search.ui.searchbar.SearchBar
+import de.saringer.moviedemoapp.features.search.landingpage.LandingPage
+import de.saringer.moviedemoapp.features.search.searchbar.SearchBar
 import de.saringer.moviedemoapp.shared.extensions.noRippleClickable
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 

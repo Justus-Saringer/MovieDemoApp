@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.ui.moviedetails
+package de.saringer.moviedemoapp.features.search.moviedetails
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

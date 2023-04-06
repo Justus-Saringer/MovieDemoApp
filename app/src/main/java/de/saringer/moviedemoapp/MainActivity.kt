@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import de.saringer.moviedemoapp.features.login.network.LoginRepository
-import de.saringer.moviedemoapp.graphsandnavigation.RootNavGraph
+import de.saringer.moviedemoapp.graphsandnavigations.RootNavGraph
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import kotlinx.coroutines.launch
 import javax.inject.Inject

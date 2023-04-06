@@ -7,10 +7,9 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageRepository
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
-import de.saringer.moviedemoapp.features.search.ui.moviedetails.MovieDetailsState
+import de.saringer.moviedemoapp.features.search.moviedetails.MovieDetailsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

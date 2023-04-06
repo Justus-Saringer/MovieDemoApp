@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.features.search.ui.landingpage
+package de.saringer.moviedemoapp.features.search.landingpage
 
 import androidx.compose.runtime.Composable
 import de.saringer.moviedemoapp.features.search.SearchViewModel

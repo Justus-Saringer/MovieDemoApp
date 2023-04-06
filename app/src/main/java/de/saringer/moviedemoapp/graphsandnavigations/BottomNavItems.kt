@@ -1,7 +1,6 @@
-package de.saringer.moviedemoapp.graphsandnavigation
+package de.saringer.moviedemoapp.graphsandnavigations
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star

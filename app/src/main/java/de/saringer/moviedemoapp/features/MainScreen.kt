@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import de.saringer.moviedemoapp.graphsandnavigation.MainNavGraph
+import de.saringer.moviedemoapp.graphsandnavigations.MainNavGraph
 
 @Composable
 fun MainScreen() {

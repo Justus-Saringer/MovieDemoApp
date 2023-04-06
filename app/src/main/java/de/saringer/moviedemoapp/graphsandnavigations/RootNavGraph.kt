@@ -1,4 +1,4 @@
-package de.saringer.moviedemoapp.graphsandnavigation
+package de.saringer.moviedemoapp.graphsandnavigations
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

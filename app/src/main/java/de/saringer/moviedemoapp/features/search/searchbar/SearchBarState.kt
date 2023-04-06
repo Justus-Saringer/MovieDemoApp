@@ -1,8 +1,7 @@
-package de.saringer.moviedemoapp.features.search.ui.searchbar
+package de.saringer.moviedemoapp.features.search.searchbar
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import de.saringer.moviedemoapp.features.search.ui.searchbar.ChipState
 
 data class SearchBarState(
     val searchInput: MutableState<String> = mutableStateOf(""),

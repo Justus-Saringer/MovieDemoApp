@@ -1,13 +1,16 @@
 package de.saringer.moviedemoapp.features
 
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import de.saringer.moviedemoapp.graphsandnavigation.BottomNavItem
+import de.saringer.moviedemoapp.graphsandnavigations.BottomNavItem
 
 @Composable
 fun BottomBarNavigation(navController: NavHostController) {

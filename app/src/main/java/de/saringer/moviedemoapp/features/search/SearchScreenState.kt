@@ -1,8 +1,8 @@
 package de.saringer.moviedemoapp.features.search
 
 import androidx.compose.runtime.mutableStateOf
-import de.saringer.moviedemoapp.features.search.ui.searchbar.ChipState
-import de.saringer.moviedemoapp.features.search.ui.searchbar.SearchBarState
+import de.saringer.moviedemoapp.features.search.searchbar.ChipState
+import de.saringer.moviedemoapp.features.search.searchbar.SearchBarState
 
 // TODO: move this to the SearchBarState and decide if this is necessary
 data class SearchScreenState(
