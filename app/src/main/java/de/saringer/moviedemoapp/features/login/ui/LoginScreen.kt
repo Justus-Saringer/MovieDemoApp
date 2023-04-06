@@ -60,11 +60,22 @@ fun LoginScreen(
         )
     ) { paddingValues ->
 
-        val onSnackBar: () -> Unit = {
+        val onUserLoginSnackBar: () -> Unit = {
             scope.launch {
                 if (state.hasPageError || !state.isInternetAvailable.value) {
                     state.snackBarHostState.showSnackbar(
                         message = state.errorText,
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+        }
+
+        val onGuestSnackBar: () -> Unit = {
+            scope.launch {
+                if (!state.isInternetAvailable.value) {
+                    state.snackBarHostState.showSnackbar(
+                        message = "No Internet available",
                         duration = SnackbarDuration.Short
                     )
                 }
@@ -101,7 +112,8 @@ fun LoginScreen(
                     keyboardController = keyboardController,
                     onSignInAsGuestClick = onSignInAsGuestClick,
                     onSignInAsUserClick = onSignInAsUserClick,
-                    onSnackBar = onSnackBar
+                    onUserLoginSnackBar = onUserLoginSnackBar,
+                    onGuestSnackBar = onGuestSnackBar
                 )
             }
 
@@ -262,7 +274,8 @@ private fun ButtonArea(
     keyboardController: SoftwareKeyboardController?,
     onSignInAsUserClick: () -> Unit,
     onSignInAsGuestClick: () -> Unit,
-    onSnackBar: () -> Unit
+    onUserLoginSnackBar: () -> Unit,
+    onGuestSnackBar: () -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         val connection by connectivityState()
@@ -277,7 +290,7 @@ private fun ButtonArea(
             onClick = {
                 state.isInternetAvailable.value = isConnected
                 keyboardController?.hide()
-                onSnackBar()
+                onUserLoginSnackBar()
                 if (state.hasPageError) return@Button
                 state.isLoading.value = true
                 onSignInAsUserClick()
@@ -298,8 +311,7 @@ private fun ButtonArea(
             enabled = !state.isLoading.value,
             onClick = {
                 state.isInternetAvailable.value = isConnected
-                // todo separate internet connection snackbar or some other solution
-                onSnackBar()
+                onGuestSnackBar()
                 keyboardController?.hide()
                 if (!isConnected) return@Button
                 state.isLoading.value = true
