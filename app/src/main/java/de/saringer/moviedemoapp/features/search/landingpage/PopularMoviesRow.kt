@@ -1,9 +1,11 @@
 package de.saringer.moviedemoapp.features.search.landingpage
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Text
@@ -23,7 +25,10 @@ import de.saringer.moviedemoapp.shared.composables.MoviePreviewItem
 fun PopularMoviesRow(viewModel: SearchViewModel, onClick: (Int) -> Unit) {
     val movies = viewModel.getMostPopularMovies().collectAsLazyPagingItems()
 
-    LazyRow {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
         items(
             items = movies,
             key = { it.id }
@@ -43,22 +48,28 @@ fun PopularMoviesRow(viewModel: SearchViewModel, onClick: (Int) -> Unit) {
 
         // First Load
         when (val state = movies.loadState.refresh) {
+
             is LoadState.Error -> {
                 item { Text(text = "An Error occurred\n${state.error}", textAlign = TextAlign.Center) }
             }
 
             is LoadState.Loading -> {
                 item {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = "Loading")
-                        Spacer(modifier = Modifier.size(8.dp))
-                        LinearLoadingIndicator()
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(168.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = "Loading")
+                            Spacer(modifier = Modifier.size(8.dp))
+                            LinearLoadingIndicator()
+                        }
                     }
                 }
             }
-            else -> {
-                item { Text(text = "Something went Wrong") }
-            }
+            else -> {}
         }
 
         when (val state = movies.loadState.append) { // Pagination
@@ -79,9 +90,7 @@ fun PopularMoviesRow(viewModel: SearchViewModel, onClick: (Int) -> Unit) {
                     }
                 }
             }
-            else -> {
-                item { Text(text = "Something went Wrong") }
-            }
+            else -> {}
         }
     }
 }
