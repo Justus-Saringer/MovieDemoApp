@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.core.graphics.drawable.toDrawable
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import de.saringer.moviedemoapp.R
@@ -80,7 +79,7 @@ fun MoviePreviewItem(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data("https://image.tmdb.org/t/p/original$posterPath")
                         .crossfade(true)
-                        .placeholder(R.drawable.ic_launcher_background.toDrawable())
+                        .placeholder(R.drawable.baseline_movie_24)
                         .build(),
                     contentScale = ContentScale.Crop,
                     onLoading = { isImageLoading.value = true },
