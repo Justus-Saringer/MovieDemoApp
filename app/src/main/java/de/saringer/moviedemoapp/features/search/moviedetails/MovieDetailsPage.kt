@@ -37,7 +37,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -66,6 +65,7 @@ import de.saringer.moviedemoapp.ui.theme.green
 import de.saringer.moviedemoapp.ui.theme.grey
 import de.saringer.moviedemoapp.ui.theme.lightBlue
 import de.saringer.moviedemoapp.ui.theme.lightGrey
+import de.saringer.moviedemoapp.ui.theme.nearlyBlack
 import de.saringer.moviedemoapp.ui.theme.orange
 import de.saringer.moviedemoapp.ui.theme.yellow
 import java.text.NumberFormat
@@ -423,7 +423,6 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
             movieDetailsState.movieDetails.value?.productionCompanies?.forEach { productionCompany ->
                 Column(
                     modifier = Modifier
-                        .alpha(0.5f)
                         .background(
                             color = lightGrey,
                             shape = RoundedCornerShape(8.dp)
@@ -440,7 +439,7 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
                     Text(
                         modifier = Modifier.width(80.dp),
                         text = productionCompany?.name.orEmpty(),
-                        color = MaterialTheme.colors.onBackground,
+                        color = nearlyBlack,
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )
@@ -460,7 +459,7 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
         if (countries.isNotEmpty()) {
             countries.forEach { country ->
                 country?.name?.let {
-                    Text(text = it, color = MaterialTheme.colors.onBackground)
+                    Text(text = "   \u2022 $it", color = MaterialTheme.colors.onBackground)
                 }
             }
         }
