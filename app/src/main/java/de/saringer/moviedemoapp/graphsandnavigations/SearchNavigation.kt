@@ -37,7 +37,9 @@ fun SearchNavigation(
                 onSearch = {},
                 viewModel = viewModel,
                 onMovieDetails = { movieId ->
-                    searchScreenNavController.navigate("movie/$movieId")
+                    searchScreenNavController.navigate("movie/$movieId") {
+                        launchSingleTop = true
+                    }
                     isBottomBarVisible.value = false
                 }
             )

@@ -1,5 +1,6 @@
 package de.saringer.moviedemoapp.graphsandnavigations
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -57,6 +58,8 @@ fun RootNavGraph(navController: NavHostController) {
             }
         }
     }
+
+    BackHandler() {}
 }
 
 object RootGraph {
