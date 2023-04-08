@@ -104,6 +104,7 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                             .fillMaxSize()
                             .background(MaterialTheme.colors.background)
                     ) {
+                        // poster image
                         AsyncImage(
                             modifier = Modifier
                                 .fillMaxWidth()
