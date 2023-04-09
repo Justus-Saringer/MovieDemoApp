@@ -36,9 +36,9 @@ fun PersonDetailsPage(state: PersonDetailsState) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(236.dp),
-            contentDescription = state.personDetails.value.name,
+            contentDescription = state.personDetails.value?.name.orEmpty(),
             model = ImageRequest.Builder(LocalContext.current)
-                .data("https://image.tmdb.org/t/p/original${state.personDetails.value.profilePath}")
+                .data("https://image.tmdb.org/t/p/original${state.personDetails.value?.profilePath}")
                 .crossfade(true)
                 .placeholder(R.drawable.baseline_movie_24.toDrawable())
                 .build(),
@@ -47,10 +47,10 @@ fun PersonDetailsPage(state: PersonDetailsState) {
 //            onSuccess = { isImageLoading.value = false },
         )
 
-        Title(text = state.personDetails.value.name ?: "Name")
+        Title(text = state.personDetails.value?.name ?: "Name")
         Spacer(modifier = Modifier.height(16.dp))
 
-        Biography(text = state.personDetails.value.biography)
+        Biography(text = state.personDetails.value?.biography)
         Spacer(modifier = Modifier.height(16.dp))
 
         Column(
@@ -60,12 +60,12 @@ fun PersonDetailsPage(state: PersonDetailsState) {
                 .background(grey)
                 .padding(vertical = 4.dp, horizontal = 8.dp)
         ) {
-            Birthday(date = state.personDetails.value.birthday ?: "No date available")
+            Birthday(date = state.personDetails.value?.birthday ?: "No date available")
             Spacer(modifier = Modifier.height(8.dp))
 
-            Deathday(date = state.personDetails.value.deathday ?: "Not dead yet")
+            Deathday(date = state.personDetails.value?.deathday ?: "Not dead yet")
 
-            PlaceOfBirth(text = state.personDetails.value.placeOfBirth.orEmpty())
+            PlaceOfBirth(text = state.personDetails.value?.placeOfBirth.orEmpty())
         }
 
     }

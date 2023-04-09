@@ -4,8 +4,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviecredits.MovieCredits
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviedetails.MovieDetails
+import de.saringer.moviedemoapp.features.search.datasources.network.domain.persondetails.PersonDetails
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toMovieCredits
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toMovieDetails
+import de.saringer.moviedemoapp.features.search.datasources.network.extension.toPersonDetails
 import de.saringer.moviedemoapp.features.search.datasources.pagingsources.MostPopularMoviesPagingSource
 import javax.inject.Inject
 
@@ -27,6 +29,12 @@ class LandingPageRepository @Inject constructor(
     suspend fun getMovieCredits(movieId: Int): MovieCredits? {
         return runCatching {
             landingPageApi.getMovieCredits(movieId = movieId).toMovieCredits()
+        }.getOrNull()
+    }
+
+    suspend fun getPersonDetails(personId: Int): PersonDetails? {
+        return kotlin.runCatching {
+            landingPageApi.getPersonDetails(personId).toPersonDetails()
         }.getOrNull()
     }
 

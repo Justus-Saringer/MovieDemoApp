@@ -77,7 +77,12 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieDetailsState) {
+fun MovieDetailsPage(
+    modifier: Modifier,
+    movieId: Int,
+    movieDetailsState: MovieDetailsState,
+    onActorClick: (Int) -> Unit
+) {
     with(movieDetailsState) {
         val refreshState = rememberPullRefreshState(
             refreshing = refreshing.value,
@@ -138,7 +143,8 @@ fun MovieDetailsPage(modifier: Modifier, movieId: Int, movieDetailsState: MovieD
                             Spacer(modifier = Modifier.size(8.dp))
                             CastRow(
                                 actors = it.cast,
-                                onClick = {/*TODO: add navigation to actor*/ })
+                                onClick = onActorClick
+                            )
                             Spacer(modifier = Modifier.size(8.dp))
                         }
                         Spacer(modifier = Modifier.height(16.dp))
@@ -535,7 +541,7 @@ fun MoviePagePreview() {
             },
             refresh = {}
         )
-        MovieDetailsPage(modifier = Modifier, movieId = 631842, movieDetailsState = state)
+        MovieDetailsPage(modifier = Modifier, movieId = 631842, movieDetailsState = state) {}
     }
 }
 
@@ -547,7 +553,7 @@ private fun FailurePreview() {
             modifier = Modifier,
             movieId = -1,
             movieDetailsState = MovieDetailsState(refresh = {}),
-        )
+        ) {}
     }
 }
 // endregion

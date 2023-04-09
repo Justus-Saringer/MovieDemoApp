@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageRepository
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
 import de.saringer.moviedemoapp.features.search.moviedetails.MovieDetailsState
+import de.saringer.moviedemoapp.features.search.persondetails.PersonDetailsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -21,6 +22,8 @@ class SearchViewModel @Inject constructor(
     val movieDetailsState = MovieDetailsState(
         refresh = { movieId -> getMovieDetailsWithCredits(movieId) }
     )
+
+    val personDetailsState = PersonDetailsState()
 
     fun getMostPopularMovies(): Flow<PagingData<Movie>> = landingPageRepository.getMostPopularMovies().cachedIn(viewModelScope)
 
@@ -37,5 +40,16 @@ class SearchViewModel @Inject constructor(
     fun clearMovieDetails() {
         movieDetailsState.movieDetails.value = null
         movieDetailsState.movieCredits.value = null
+    }
+
+    fun getPersonDetails(personId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            clearPersonDetails()
+            personDetailsState.personDetails.value = landingPageRepository.getPersonDetails(personId)
+        }
+    }
+
+    fun clearPersonDetails() {
+        personDetailsState.personDetails.value = null
     }
 }

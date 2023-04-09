@@ -15,6 +15,7 @@ import de.saringer.moviedemoapp.features.search.SearchAndLandingPage
 import de.saringer.moviedemoapp.features.search.SearchScreenState
 import de.saringer.moviedemoapp.features.search.SearchViewModel
 import de.saringer.moviedemoapp.features.search.moviedetails.MovieDetailsPage
+import de.saringer.moviedemoapp.features.search.persondetails.PersonDetailsPage
 
 @Composable
 fun SearchNavigation(
@@ -68,7 +69,12 @@ fun SearchNavigation(
             MovieDetailsPage(
                 modifier = Modifier,
                 movieId = movieId,
-                movieDetailsState = viewModel.movieDetailsState
+                movieDetailsState = viewModel.movieDetailsState,
+                onActorClick = { personId ->
+                    searchScreenNavController.navigate("person/$personId") {
+                        launchSingleTop = true
+                    }
+                }
             )
 
             BackHandler {
@@ -77,6 +83,31 @@ fun SearchNavigation(
                 viewModel.clearMovieDetails()
             }
         }
+
+        composable(
+            route = "person/{personid}",
+            arguments = listOf(
+                navArgument(
+                    name = "personId",
+                    builder = { nullable = true }
+                )
+            )
+        ) { navBackStackEntry ->
+            val personId = navBackStackEntry.arguments?.getString("personid")?.toInt() ?: -1
+            if (personId == -1) return@composable
+
+            viewModel.getPersonDetails(personId)
+
+            PersonDetailsPage(state = viewModel.personDetailsState)
+
+
+/*            BackHandler {
+                isBottomBarVisible.value = true
+                searchScreenNavController.navigate("searchAndLanding")
+                viewModel.clearMovieDetails()
+            }*/
+        }
+
     }
 }
 
