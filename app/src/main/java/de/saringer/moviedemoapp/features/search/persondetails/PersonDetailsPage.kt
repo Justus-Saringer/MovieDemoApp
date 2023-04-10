@@ -81,6 +81,11 @@ fun PersonDetailsPage(state: PersonDetailsState) {
             Spacer(modifier = Modifier.height(8.dp))
 
             PlaceOfBirth(text = state.personDetails.value?.placeOfBirth.orEmpty())
+
+            state.personDetails.value?.knownForDepartment?.let {
+                Spacer(modifier = Modifier.height(8.dp))
+                KnownDepartment(department = it)
+            }
         }
 
     }
@@ -165,6 +170,11 @@ private fun PlaceOfBirth(text: String) {
         text = "📍 Place of birth: $text",
         color = MaterialTheme.colors.onBackground
     )
+}
+
+@Composable
+private fun KnownDepartment(department: String) {
+    Text(text = "🏛️ Deparment: $department", color = MaterialTheme.colors.onBackground)
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
