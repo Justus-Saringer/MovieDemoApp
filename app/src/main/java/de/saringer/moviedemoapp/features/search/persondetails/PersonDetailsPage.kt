@@ -61,7 +61,7 @@ fun PersonDetailsPage(state: PersonDetailsState) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Name(text = state.personDetails.value?.name ?: "Name")
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Biography(text = state.personDetails.value?.biography, state = state)
         Spacer(modifier = Modifier.height(16.dp))
@@ -86,6 +86,7 @@ fun PersonDetailsPage(state: PersonDetailsState) {
                 Spacer(modifier = Modifier.height(8.dp))
                 KnownDepartment(department = it)
             }
+            Spacer(modifier = Modifier.height(4.dp))
         }
 
     }
