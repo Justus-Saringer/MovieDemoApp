@@ -5,5 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.persondetails.PersonDetails
 
 data class PersonDetailsState(
-    val personDetails: MutableState<PersonDetails?> = mutableStateOf(null)
+    val personDetails: MutableState<PersonDetails?> = mutableStateOf(null),
+    val isExpanded: MutableState<Boolean> = mutableStateOf(false)
 )

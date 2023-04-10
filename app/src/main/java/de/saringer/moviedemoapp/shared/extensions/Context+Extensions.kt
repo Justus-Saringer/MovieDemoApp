@@ -57,4 +57,3 @@ fun Context.observeConnectivityAsFlow() = callbackFlow {
         connectivityManager.unregisterNetworkCallback(callback)
     }
 }
-
