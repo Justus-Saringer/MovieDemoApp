@@ -59,6 +59,7 @@ import de.saringer.moviedemoapp.features.search.datasources.network.domain.movie
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviedetails.ProductionCompany
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.moviedetails.ProductionCountry
 import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
+import de.saringer.moviedemoapp.shared.enums.ScreenState
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.blue
 import de.saringer.moviedemoapp.ui.theme.green
@@ -86,7 +87,10 @@ fun MovieDetailsPage(
     with(movieDetailsState) {
         val refreshState = rememberPullRefreshState(
             refreshing = refreshing.value,
-            onRefresh = { refresh.invoke(movieId) }
+            onRefresh = {
+                refreshing.value = true
+                refresh.invoke(movieId)
+            }
         )
 
         Box(
@@ -98,11 +102,12 @@ fun MovieDetailsPage(
         ) {
 
             when {
-                movieDetailsState.isPageLoading.value -> {
+
+                screenState.value == ScreenState.LOADING && movieDetails.value == null -> {
                     LinearLoadingIndicator()
                 }
 
-                movieDetails.value?.originalTitle != null && movieDetails.value?.overview != null -> {
+                screenState.value == ScreenState.SUCCESS && movieDetails.value != null -> {
                     Column(
                         modifier = Modifier
                             .align(Alignment.TopCenter)
@@ -154,13 +159,14 @@ fun MovieDetailsPage(
                     }
                 }
 
-                else -> {
+                screenState.value == ScreenState.ERROR -> {
                     Text(
                         text = "Something went wrong\n¯\\_(ツ)_/¯",
                         textAlign = TextAlign.Center,
                         color = lightBlue
                     )
                 }
+
             }
 
             PullRefreshIndicator(
