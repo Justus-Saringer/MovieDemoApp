@@ -30,6 +30,8 @@ class SearchViewModel @Inject constructor(
 
     fun getMostPopularMovies(): Flow<PagingData<Movie>> = landingPageRepository.getMostPopularMovies().cachedIn(viewModelScope)
 
+    fun getHighRatedMovies(): Flow<PagingData<Movie>> = landingPageRepository.getHighRatedMovies().cachedIn(viewModelScope)
+
     fun getMovieDetailsWithCredits(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
 

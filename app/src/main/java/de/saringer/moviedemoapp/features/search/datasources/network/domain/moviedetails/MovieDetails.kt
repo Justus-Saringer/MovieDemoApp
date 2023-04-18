@@ -18,7 +18,7 @@ data class MovieDetails(
     val productionCompanies: List<ProductionCompany?> = emptyList(),
     val productionCountries: List<ProductionCountry?> = emptyList(),
     val releaseDate: String? = null,
-    val revenue: Int? = null,
+    val revenue: Long? = null,
     val runtime: Int? = null,
     val spokenLanguages: List<SpokenLanguage?> = emptyList(),
     val status: String? = null,

@@ -15,15 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import de.saringer.moviedemoapp.features.search.SearchViewModel
+import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
 import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
 import de.saringer.moviedemoapp.shared.composables.MoviePreviewItem
 
 @Composable
-fun PopularMoviesRow(viewModel: SearchViewModel, onClick: (Int) -> Unit) {
-    val movies = viewModel.getMostPopularMovies().collectAsLazyPagingItems()
+fun MoviesRow(viewModel: SearchViewModel, onClick: (Int) -> Unit, movies: LazyPagingItems<Movie>) {
 
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
