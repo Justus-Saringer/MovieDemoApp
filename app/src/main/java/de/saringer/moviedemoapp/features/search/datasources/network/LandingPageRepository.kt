@@ -9,6 +9,7 @@ import de.saringer.moviedemoapp.features.search.datasources.network.domain.perso
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toMovieCredits
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toMovieDetails
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toPersonDetails
+import de.saringer.moviedemoapp.features.search.datasources.pagingsources.BestMoviesFromYearPagingSource
 import de.saringer.moviedemoapp.features.search.datasources.pagingsources.HighRatedMoviesPagingSource
 import de.saringer.moviedemoapp.features.search.datasources.pagingsources.MostPopularMoviesPagingSource
 import javax.inject.Inject
@@ -27,10 +28,10 @@ class LandingPageRepository @Inject constructor(
         pagingSourceFactory = { HighRatedMoviesPagingSource(landingPageApi = landingPageApi) }
     ).flow
 
-//    fun getBestMoviesFromYear() = Pager(
-//        config = PagingConfig(pageSize = 15),
-//        pagingSourceFactory = { BestMoviesFromYearPagingSource(landingPageApi) }
-//    ).flow
+    fun getBestMoviesOfTheYear(year: Int) = Pager(
+        config = PagingConfig(pageSize = 15),
+        pagingSourceFactory = { BestMoviesFromYearPagingSource(landingPageApi = landingPageApi, year = year) }
+    ).flow
 
 //    fun getHighRatedScienceFictionMovies(year: Int) = Pager(
 //        config = PagingConfig(pageSize = 15),

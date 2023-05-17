@@ -115,20 +115,23 @@ fun MovieDetailsPage(
                             .background(MaterialTheme.colors.background)
                     ) {
                         // poster image
-                        AsyncImage(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(236.dp),
-                            contentDescription = movieDetails.value?.originalTitle,
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data("https://image.tmdb.org/t/p/original${movieDetails.value?.backdropPath}")
-                                .crossfade(true)
-                                .placeholder(R.drawable.ic_launcher_background.toDrawable())
-                                .build(),
-                            contentScale = ContentScale.Inside,
-                            onLoading = { isImageLoading.value = true },
-                            onSuccess = { isImageLoading.value = false },
-                        )
+
+                        if (movieDetails.value?.backdropPath != null) {
+                            AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(236.dp),
+                                contentDescription = movieDetails.value?.originalTitle,
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data("https://image.tmdb.org/t/p/original${movieDetails.value?.backdropPath}")
+                                    .crossfade(true)
+                                    .placeholder(R.drawable.ic_launcher_background.toDrawable())
+                                    .build(),
+                                contentScale = ContentScale.Inside,
+                                onLoading = { isImageLoading.value = true },
+                                onSuccess = { isImageLoading.value = false },
+                            )
+                        }
 
                         TitleWithYear(
                             originalTitle = movieDetails.value?.originalTitle,
@@ -476,6 +479,8 @@ private fun Facts(movieDetailsState: MovieDetailsState) {
                 }
             }
         }
+
+        if (countries.isEmpty()) Text(text = " none", color = MaterialTheme.colors.onBackground)
     }
 
 }

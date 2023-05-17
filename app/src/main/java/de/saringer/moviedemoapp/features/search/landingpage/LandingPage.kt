@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import de.saringer.moviedemoapp.features.search.SearchViewModel
+import java.util.*
+import kotlin.random.Random
 
 @Composable
 fun LandingPage(viewModel: SearchViewModel, onMovieDetails: (Int) -> Unit) {
@@ -19,11 +21,18 @@ fun LandingPage(viewModel: SearchViewModel, onMovieDetails: (Int) -> Unit) {
     ) {
         Text("Most Popular")
         Spacer(modifier = Modifier.height(8.dp))
-        MoviesRow(viewModel = viewModel, onClick = onMovieDetails, movies = viewModel.getMostPopularMovies().collectAsLazyPagingItems())
+        MoviesRow(onClick = onMovieDetails, movies = viewModel.getMostPopularMovies().collectAsLazyPagingItems())
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(text = "High Rated")
         Spacer(modifier = Modifier.height(8.dp))
-        MoviesRow(viewModel = viewModel, onClick = onMovieDetails, movies = viewModel.getHighRatedMovies().collectAsLazyPagingItems())
+        MoviesRow(onClick = onMovieDetails, movies = viewModel.getHighRatedMovies().collectAsLazyPagingItems())
+        Spacer(modifier = Modifier.height(16.dp))
+
+        val year = Random.nextInt(1970, Calendar.getInstance().get(Calendar.YEAR))
+
+        Text(text = "Best Movies Of The Year: $year")
+        Spacer(modifier = Modifier.height(8.dp))
+        MoviesRow(onClick = onMovieDetails, movies = viewModel.getBestMoviesOfTheYear(year = year).collectAsLazyPagingItems())
     }
 }
