@@ -1,29 +1,37 @@
 package de.saringer.moviedemoapp.features.login
 
+import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import de.saringer.moviedemoapp.features.login.network.LoginRepository
-import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdGuest
-import de.saringer.moviedemoapp.features.login.network.domain.LoginSessionIdUser
-import de.saringer.moviedemoapp.features.login.network.domain.LoginToken
 import de.saringer.moviedemoapp.features.login.ui.LoginScreenState
+import de.saringer.moviedemoapp.shared.extensions.observeConnectivityAsFlow
+import de.saringer.moviedemoapp.shared.state.ConnectionState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val application: Application
 ) : ViewModel() {
 
-    val loginState = LoginScreenState(usernameInput = "", passwordInput = "", isLoading = false, isPasswordVisible = false)
+    val loginState = LoginScreenState(
+        usernameInput = mutableStateOf(""),
+        passwordInput = mutableStateOf(""),
+        isLoading = mutableStateOf(false),
+        isPasswordVisible = mutableStateOf(false)
+    )
 
     val getSessionIdUser
         get() = loginRepository.sessionIdUser
 
     val getSessionIdGuest
-        get () = loginRepository.sessionIdGuest
+        get() = loginRepository.sessionIdGuest
 
     init {
         viewModelScope.launch {
@@ -35,6 +43,15 @@ class LoginViewModel @Inject constructor(
                     requestToken = loginRepository.tokenData?.requestToken!!
                 )
             }
+
+            setListener()
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private suspend fun setListener() {
+        application.applicationContext.observeConnectivityAsFlow().collect {
+            loginState.isInternetAvailable.value = it == ConnectionState.Available
         }
     }
 
@@ -60,8 +77,8 @@ class LoginViewModel @Inject constructor(
 
             loginRepository.sessionIdUser = loginRepository.tokenData?.requestToken?.let { requestToken ->
                 loginRepository.getSessionIdWithUserData(
-                    username = loginState.usernameInput.value,
-                    password = loginState.passwordInput.value,
+                    username = loginState.usernameInput.value.orEmpty(),
+                    password = loginState.passwordInput.value.orEmpty(),
                     requestToken = requestToken
                 )
             }

@@ -40,7 +40,7 @@ interface LandingPageApi {
         @Query("page") page: Int,
     ): DiscoverResponse
 
-/*    @GET("discover/movie?sort_by=vote_average.desc")
+    @GET("discover/movie?sort_by=vote_average.desc")
     suspend fun getBestMoviesFromYear(
         @Query("api_key") apiKey: String? = BuildConfig.APIKEY,
         @Query("primary_release_year") releaseYear: Int,
@@ -51,5 +51,5 @@ interface LandingPageApi {
     suspend fun getHighestRatedScienceFictionMovies(
         @Query("api_key") apiKey: String? = BuildConfig.APIKEY,
         @Query("page") page: Int,
-    ): DiscoverResponse*/
+    ): DiscoverResponse
 }

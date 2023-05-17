@@ -19,13 +19,23 @@ class LandingPageRepository @Inject constructor(
 
     fun getMostPopularMovies() = Pager(
         config = PagingConfig(pageSize = 15),
-        pagingSourceFactory = { MostPopularMoviesPagingSource(landingPageApi) }
+        pagingSourceFactory = { MostPopularMoviesPagingSource(landingPageApi = landingPageApi) }
     ).flow
 
     fun getHighRatedMovies() = Pager(
         config = PagingConfig(pageSize = 15),
-        pagingSourceFactory = { HighRatedMoviesPagingSource(landingPageApi) }
+        pagingSourceFactory = { HighRatedMoviesPagingSource(landingPageApi = landingPageApi) }
     ).flow
+
+//    fun getBestMoviesFromYear() = Pager(
+//        config = PagingConfig(pageSize = 15),
+//        pagingSourceFactory = { BestMoviesFromYearPagingSource(landingPageApi) }
+//    ).flow
+
+//    fun getHighRatedScienceFictionMovies(year: Int) = Pager(
+//        config = PagingConfig(pageSize = 15),
+//        pagingSourceFactory = { HighratedScienceFictionMoviesPagingSource(landingPageApi, year) }
+//    )
 
     suspend fun getMovieDetails(movieId: Int): MovieDetails? {
         return runCatching {
@@ -49,29 +59,4 @@ class LandingPageRepository @Inject constructor(
         }.getOrNull()
     }
 
-    // not needed due to pagination
-
-//    suspend fun getHighRatedMovies(page: Int): DiscoverModel? {
-//        return withContext(Dispatchers.IO) {
-//            runCatching {
-//                landingPageApi.getHighRatedMovies(page = page).toDiscoverModel()
-//            }.getOrNull()
-//        }
-//    }
-//
-//    suspend fun getBestMoviesFromYear(page: Int, releaseYear: Int): DiscoverModel? {
-//        return withContext(Dispatchers.IO) {
-//            runCatching {
-//                landingPageApi.getBestMoviesFromYear(releaseYear = releaseYear, page = page).toDiscoverModel()
-//            }.getOrNull()
-//        }
-//    }
-//
-//    suspend fun getHighestRatedScienceFictionMovies(page: Int): DiscoverModel? {
-//        return withContext(Dispatchers.IO) {
-//            runCatching {
-//                landingPageApi.getHighestRatedScienceFictionMovies(page = page).toDiscoverModel()
-//            }.getOrNull()
-//        }
-//    }
 }

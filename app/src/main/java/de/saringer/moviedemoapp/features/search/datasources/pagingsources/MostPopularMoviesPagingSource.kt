@@ -6,9 +6,8 @@ import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageA
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toDiscoverModel
 import java.util.concurrent.CancellationException
-import javax.inject.Inject
 
-class MostPopularMoviesPagingSource @Inject constructor(
+class MostPopularMoviesPagingSource(
     private val landingPageApi: LandingPageApi
 ) : PagingSource<Int, Movie>() {
 

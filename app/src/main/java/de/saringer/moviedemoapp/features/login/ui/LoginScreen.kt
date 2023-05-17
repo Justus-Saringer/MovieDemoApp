@@ -10,7 +10,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -35,11 +35,8 @@ import androidx.compose.ui.unit.dp
 import de.saringer.moviedemoapp.R
 import de.saringer.moviedemoapp.shared.composables.LinearLoadingIndicator
 import de.saringer.moviedemoapp.shared.extensions.noRippleClickable
-import de.saringer.moviedemoapp.shared.state.ConnectionState
-import de.saringer.moviedemoapp.shared.state.connectivityState
 import de.saringer.moviedemoapp.ui.theme.MovieDemoAppTheme
 import de.saringer.moviedemoapp.ui.theme.orange
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
@@ -62,7 +59,7 @@ fun LoginScreen(
 
         val onUserLoginSnackBar: () -> Unit = {
             scope.launch {
-                if (state.hasPageError || !state.isInternetAvailable.value) {
+                if (state.hasPageError || state.isInternetAvailable.value) {
                     state.snackBarHostState.showSnackbar(
                         message = state.errorText,
                         duration = SnackbarDuration.Short
@@ -182,7 +179,7 @@ private fun UserInputArea(
         // username
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = state.usernameInput.value,
+            value = state.usernameInput.value.orEmpty(),
             singleLine = true,
             label = { Text(text = stringResource(id = R.string.username)) },
             onValueChange = { newValue ->
@@ -195,7 +192,7 @@ private fun UserInputArea(
             ),
             enabled = !state.isLoading.value,
             trailingIcon = {
-                if (state.usernameInput.value.isNotBlank()) {
+                if (state.usernameInput.value?.isNotBlank() == true) {
                     IconButton(
                         onClick = {
                             state.usernameInput.value = ""
@@ -225,7 +222,7 @@ private fun UserInputArea(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
-            value = state.passwordInput.value,
+            value = state.passwordInput.value.orEmpty(),
             maxLines = 1,
             label = { Text(text = stringResource(id = R.string.password)) },
             onValueChange = { newValue ->
@@ -267,7 +264,7 @@ private fun UserInputArea(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ButtonArea(
     state: LoginScreenState,
@@ -278,8 +275,6 @@ private fun ButtonArea(
     onGuestSnackBar: () -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        val connection by connectivityState()
-        val isConnected = connection == ConnectionState.Available
 
         // user login
         Button(
@@ -288,7 +283,6 @@ private fun ButtonArea(
                 .height(52.dp),
             enabled = !state.isLoading.value,
             onClick = {
-                state.isInternetAvailable.value = isConnected
                 keyboardController?.hide()
                 onUserLoginSnackBar()
                 if (state.hasPageError) return@Button
@@ -310,10 +304,9 @@ private fun ButtonArea(
             elevation = null,
             enabled = !state.isLoading.value,
             onClick = {
-                state.isInternetAvailable.value = isConnected
                 onGuestSnackBar()
                 keyboardController?.hide()
-                if (!isConnected) return@Button
+                if (!state.isInternetAvailable.value) return@Button
                 state.isLoading.value = true
                 onSignInAsGuestClick()
             },
@@ -331,7 +324,12 @@ private fun ButtonArea(
 @Composable
 private fun LoginScreenPreview() {
     MovieDemoAppTheme {
-        val state = LoginScreenState(usernameInput = "", passwordInput = "", isLoading = false, isPasswordVisible = false)
+        val state = LoginScreenState(
+            usernameInput = remember { mutableStateOf("") },
+            passwordInput = remember { mutableStateOf("") },
+            isLoading = remember { mutableStateOf(false) },
+            isPasswordVisible = remember { mutableStateOf(false) }
+        )
         LoginScreen(state = state, onSignInAsUserClick = {}) {}
     }
 }
@@ -340,7 +338,12 @@ private fun LoginScreenPreview() {
 @Composable
 private fun LoginScreenLoadingPreview() {
     MovieDemoAppTheme {
-        val state = LoginScreenState(isLoading = true, usernameInput = "", passwordInput = "", isPasswordVisible = false)
+        val state = LoginScreenState(
+            isLoading = remember { mutableStateOf(true) },
+            usernameInput = remember { mutableStateOf("") },
+            passwordInput = remember { mutableStateOf("") },
+            isPasswordVisible = remember { mutableStateOf(false) }
+        )
         LoginScreen(state = state, onSignInAsUserClick = {}) {}
     }
 }

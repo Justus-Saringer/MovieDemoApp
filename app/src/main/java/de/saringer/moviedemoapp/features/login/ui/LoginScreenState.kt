@@ -1,32 +1,29 @@
 package de.saringer.moviedemoapp.features.login.ui
 
 import androidx.compose.material.SnackbarHostState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
-class LoginScreenState constructor(
-    usernameInput: String,
-    passwordInput: String,
-    isLoading: Boolean,
-    isPasswordVisible: Boolean,
+data class LoginScreenState constructor(
+    val usernameInput: MutableState<String?> = mutableStateOf(null),
+    val passwordInput: MutableState<String?> = mutableStateOf(null),
+    val isLoading: MutableState<Boolean> = mutableStateOf(false),
+    val isPasswordVisible: MutableState<Boolean> = mutableStateOf(false),
+    val isInternetAvailable: MutableState<Boolean> = mutableStateOf(false),
+    val snackBarHostState: SnackbarHostState = SnackbarHostState()
 ) {
-    val usernameInput = mutableStateOf(usernameInput)
-    val passwordInput = mutableStateOf(passwordInput)
-    val isLoading = mutableStateOf(isLoading)
-    val isPasswordVisible = mutableStateOf(isPasswordVisible)
-    val snackBarHostState = SnackbarHostState()
-    val isInternetAvailable = mutableStateOf(true)
 
     private val areInputFieldsEmpty: Boolean
-        get() = usernameInput.value.isEmpty() || passwordInput.value.isEmpty()
+        get() = usernameInput.value.isNullOrEmpty() || passwordInput.value.isNullOrEmpty()
 
     val hasPageError: Boolean
-        get() = areInputFieldsEmpty || isInternetAvailable.value
+        get() = areInputFieldsEmpty || isInternetAvailable.value ?: false
 
     val errorText: String
         get() = when {
-            !isInternetAvailable.value -> "No Internet available"
-            usernameInput.value.isEmpty() -> "Username is empty"
-            passwordInput.value.isEmpty() -> "Password is empty"
+            isInternetAvailable.value == false -> "No Internet available"
+            usernameInput.value.isNullOrEmpty() -> "Username is empty"
+            passwordInput.value.isNullOrEmpty() -> "Password is empty"
             else -> "Password or Username is incorrect"
         }
 }

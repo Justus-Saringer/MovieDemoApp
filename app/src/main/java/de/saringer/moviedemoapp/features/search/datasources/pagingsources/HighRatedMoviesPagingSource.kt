@@ -6,9 +6,8 @@ import de.saringer.moviedemoapp.features.search.datasources.network.LandingPageA
 import de.saringer.moviedemoapp.features.search.datasources.network.domain.discover.Movie
 import de.saringer.moviedemoapp.features.search.datasources.network.extension.toDiscoverModel
 import java.util.concurrent.CancellationException
-import javax.inject.Inject
 
-class HighRatedMoviesPagingSource @Inject constructor(
+class HighRatedMoviesPagingSource(
     private val landingPageApi: LandingPageApi
 ) : PagingSource<Int, Movie>() {
 
