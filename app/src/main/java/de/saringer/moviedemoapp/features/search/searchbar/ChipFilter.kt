@@ -17,39 +17,36 @@ import de.saringer.moviedemoapp.ui.theme.lightBlue
 @Composable
 fun ChipFilter(state: SearchBarState) {
     Row(
-        modifier = Modifier
-            .horizontalScroll(rememberScrollState())
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
 
-        ) {
+            ) {
         state.chips.forEach { chipState ->
             chipState.isSelected.value = chipState.text.value == state.selectedChip.value
 
             Chip(
-                onClick = {
-                    if (state.selectedChip.value == chipState.text.value) {
-                        state.selectedChip.value = ""
-                        chipState.isSelected.value = false
+                    onClick = {
+                        if (state.selectedChip.value != chipState.text.value) {
+                            state.selectedChip.value = chipState.text.value
+                            chipState.isSelected.value = true
+                        }
+                    },
+                    content = {
+                        Text(text = chipState.text.value)
+                    },
+                    colors = if (chipState.isSelected.value) {
+                        ChipDefaults.chipColors(
+                                backgroundColor = lightBlue,
+                                contentColor = MaterialTheme.colors.onSecondary
+                        )
                     } else {
-                        state.selectedChip.value = chipState.text.value
-                        chipState.isSelected.value = true
+                        ChipDefaults.chipColors(
+                                backgroundColor = MaterialTheme.colors.primary,
+                                contentColor = MaterialTheme.colors.onPrimary
+                        )
                     }
-                },
-                content = {
-                    Text(text = chipState.text.value)
-                },
-                colors = if (chipState.isSelected.value) {
-                    ChipDefaults.chipColors(
-                        backgroundColor = lightBlue,
-                        contentColor = MaterialTheme.colors.onSecondary
-                    )
-                } else {
-                    ChipDefaults.chipColors(
-                        backgroundColor = MaterialTheme.colors.primary,
-                        contentColor = MaterialTheme.colors.onPrimary
-                    )
-                }
             )
 
             Spacer(modifier = Modifier.size(8.dp))

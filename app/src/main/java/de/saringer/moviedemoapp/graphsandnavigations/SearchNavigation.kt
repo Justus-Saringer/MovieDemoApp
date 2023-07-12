@@ -20,7 +20,6 @@ import de.saringer.moviedemoapp.features.search.persondetails.PersonDetailsPage
 @Composable
 fun SearchNavigation(
     paddingValues: PaddingValues,
-    state: SearchScreenState,
     isBottomBarVisible: MutableState<Boolean>
 ) {
 
@@ -34,8 +33,8 @@ fun SearchNavigation(
         composable("searchAndLanding") {
             SearchAndLandingPage(
                 paddingValues = paddingValues,
-                state = state,
-                onSearch = {},
+                state = viewModel.searchScreenState,
+                onSearch = { viewModel.doSearch() },
                 viewModel = viewModel,
                 onMovieDetails = { movieId ->
                     searchScreenNavController.navigate("movie/$movieId") {

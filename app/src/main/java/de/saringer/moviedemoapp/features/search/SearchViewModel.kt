@@ -26,7 +26,15 @@ class SearchViewModel @Inject constructor(
         }
     )
 
+    val searchScreenState = SearchScreenState()
+
     val personDetailsState = PersonDetailsState()
+
+    fun doSearch() {
+        viewModelScope.launch (Dispatchers.IO) {
+            // TODO: change lambda to flow
+        }
+    }
 
     fun getMostPopularMovies(): Flow<PagingData<Movie>> = landingPageRepository.getMostPopularMovies().cachedIn(viewModelScope)
 

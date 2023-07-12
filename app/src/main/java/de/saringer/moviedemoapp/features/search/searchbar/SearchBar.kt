@@ -58,13 +58,16 @@ private fun SearchField(state: SearchBarState, onSearch: () -> Unit) {
         onValueChange = { newValue ->
             state.searchInput.value = newValue
         },
+
         keyboardActions = KeyboardActions(
             onDone = {
                 keyboardController?.hide()
                 onSearch()
             }
         ),
+
         trailingIcon = {
+
             AnimatedVisibility(
                 visible = state.searchInput.value.isNotBlank(),
                 enter = scaleIn(),
@@ -89,7 +92,9 @@ private fun SearchField(state: SearchBarState, onSearch: () -> Unit) {
                     contentDescription = null
                 )
             }
+
         },
+
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = MaterialTheme.colors.primary,
             cursorColor = MaterialTheme.colors.onPrimary,

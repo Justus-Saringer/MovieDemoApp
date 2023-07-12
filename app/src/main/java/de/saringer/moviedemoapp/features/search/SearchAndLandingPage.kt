@@ -34,6 +34,7 @@ fun SearchAndLandingPage(
             .noRippleClickable { focusManager.clearFocus() }
             .padding(paddingValues)
     ) {
+
         SearchBar(state = state.searchBarState, onSearch = onSearch)
 
         Spacer(modifier = Modifier.size(16.dp))

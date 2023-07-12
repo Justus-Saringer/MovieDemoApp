@@ -20,7 +20,7 @@ fun MainNavGraph(navController: NavHostController, paddingValues: PaddingValues,
         }
 
         composable(BottomNavItem.Search.route) {
-            SearchNavigation(paddingValues = paddingValues, state = SearchScreenState(), isBottomBarVisible = isBottomBarVisible)
+            SearchNavigation(paddingValues = paddingValues, isBottomBarVisible = isBottomBarVisible)
             // TODO: put SearchScreenState into a viewModel
         }
 

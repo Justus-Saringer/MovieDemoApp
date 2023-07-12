@@ -6,5 +6,5 @@ import androidx.compose.runtime.mutableStateOf
 data class SearchBarState(
     val searchInput: MutableState<String> = mutableStateOf(""),
     val selectedChip: MutableState<String> = mutableStateOf(""),
-    val chips: List<ChipState> = emptyList()
+    val chips: List<ChipState> = emptyList(),
 )
